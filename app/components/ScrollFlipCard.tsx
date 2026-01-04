@@ -146,6 +146,15 @@ export default function ScrollFlipCard() {
               <section className="h-screen bg-black flex items-center justify-center z-100">
                 <AboutSection />
               </section>
+              <h2
+                style={{
+                  opacity: textOpacity,
+                  transform: `translateY(${textY}px)`,
+                }}
+                className="text-4xl font-bold text-green-900 text-lg lg:text-3xl"
+              >
+                Binary
+              </h2>
             </div>
           </div>
         </div>

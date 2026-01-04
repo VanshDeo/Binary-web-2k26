@@ -1,3 +1,5 @@
+
+import Gallary from "./components/gallary";
 import ScrollFlipCard from "./components/ScrollFlipCard";
 import Timeline from "./components/Timeline";
 import Tracks from "./components/Tracks";
@@ -19,6 +21,10 @@ export default function Home() {
       </section>
       <Tracks />
       <Mentors />
+
+      <Timeline />
+
+      <Gallary />
     </>
   );
 }

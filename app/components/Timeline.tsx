@@ -120,27 +120,27 @@ const Timeline = () => {
         }
       );
 
-      gsap.to(tabPacman, {
-        motionPath: {
-          path: tabPath,
-          align: tabPath,
-          alignOrigin: [0.5, 0.5],
-          autoRotate: true,
-          start: 0,
-          end: 1,
-        },
-        transformOrigin: "50% 50%",
-        duration: 5,
-        ease: "none",
-        immediateRender: true,
-        scrollTrigger: {
-          trigger: tabSvg,
-          start: "top 20%",
-          end: "bottom bottom",
-          scrub: 2,
-          markers: true,
-        },
-      });
+        gsap.to(tabPacman, {
+            motionPath: {
+                path: tabPath,
+                align: tabPath,
+                alignOrigin: [0.5, 0.5],
+                autoRotate: true,
+                start: 0, 
+                end: 1,
+            },
+            transformOrigin: "50% 50%",
+            duration: 5,
+            ease: "none",
+            immediateRender: true,
+            scrollTrigger: {
+                trigger: tabSvg,
+                start: "top 20%",
+                end: "bottom bottom",
+                scrub: 2,
+                markers: false,
+            },
+        });
     }
 
     // --- Mobile (Phone) Animation ---

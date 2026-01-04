@@ -1,13 +1,7 @@
 'use client';
 
-import Gallary from "./components/gallary";
-import ScrollFlipCard from "./components/ScrollFlipCard";
-import Tracks from "./components/Tracks";
-import Mentors from "./components/Mentors";
-import Timeline from "./components/Timeline";
-import AboutSection from "./components/AboutSection";
 import { useState } from 'react';
-import SpaceInvadersLoading from '@/app/components/SpaceInvadersLoading';
+import SpaceInvadersLoading from '../components/SpaceInvadersLoading';
 import PixelTransition from '@/app/components/PixelTransition';
 
 import Gallary from "./components/gallary";

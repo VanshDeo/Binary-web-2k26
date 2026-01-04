@@ -8,8 +8,10 @@ import Timeline from "./components/Timeline";
 import { useState } from "react";
 import SpaceInvadersLoading from "@/components/SpaceInvadersLoading";
 import PixelTransition from "@/components/PixelTransition";
+import AboutSection from "./components/AboutSection";
+import Navbar from "./components/Navbar";
 
-export default function HomePage() {
+export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [transitionActive, setTransitionActive] = useState<boolean>(false);
 
@@ -36,13 +38,16 @@ export default function HomePage() {
             onTransitionChange={setTransitionActive}
           />
         ) : (
-          <main className="flex flex-col gap-24">
-            <ScrollFlipCard />
-            <Timeline />
-            <Tracks />
-            <Mentors />
-            <Gallary />
-          </main>
+          <>
+            <Navbar />
+            <main className="flex flex-col gap-24">
+              <ScrollFlipCard />
+              <Timeline />
+              <Tracks />
+              <Mentors />
+              <Gallary />
+            </main>
+          </>
         )}
       </div>
     </>

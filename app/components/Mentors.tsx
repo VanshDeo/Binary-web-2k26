@@ -266,7 +266,8 @@ const Mentors = () => {
                 </div>
 
                 {/* Team marquee - Slower animations */}
-                <div className="mt-10 flex justify-center gap-8 max-h-[800px] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
+                {/* Desktop Layout - Vertical Columns */}
+                <div className="mt-10 hidden md:flex justify-center gap-8 max-h-[800px] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
                     <div className="hidden lg:block">
                         <Marquee pauseOnHover vertical className="[--duration:45s]">
                             {firstColumn.map((member) => (
@@ -305,6 +306,21 @@ const Mentors = () => {
                             ))}
                         </Marquee>
                     </div>
+                </div>
+
+                {/* Mobile Layout - Horizontal Marquee */}
+                <div className="mt-10 md:hidden block overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                    <Marquee pauseOnHover className="[--duration:45s]">
+                        {teamMembers.map((member) => (
+                            <div key={member.name} className="px-4">
+                                <TeamMemberCard
+                                    {...member}
+                                    highlightDirection="tr-bl"
+                                    onClick={() => handleCardClick(member)}
+                                />
+                            </div>
+                        ))}
+                    </Marquee>
                 </div>
             </div>
 

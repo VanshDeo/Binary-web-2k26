@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-press-start: var(--font-press-start-2p);
+
+  @keyframes glitch {
+    0% {
+      transform: translate(0);
+      text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9;
+      clip-path: inset(50% 0 30% 0);
+    }
+
+    20% {
+      transform: translate(-2px, 2px);
+      text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9;
+      clip-path: inset(10% 0 80% 0);
+    }
+
+    40% {
+      transform: translate(2px, -2px);
+      text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9;
+      clip-path: inset(80% 0 5% 0);
+    }
+
+    60% {
+      transform: translate(-2px, -2px);
+      text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9;
+      clip-path: inset(40% 0 43% 0);
+    }
+
+    80% {
+      transform: translate(2px, 2px);
+      text-shadow: -2px 0 #ff00c1, 2px 0 #00fff9;
+      clip-path: inset(15% 0 71% 0);
+    }
+
+    100% {
+      transform: translate(0);
+      text-shadow: 2px 0 #ff00c1, -2px 0 #00fff9;
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  --animate-glitch: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite both;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}

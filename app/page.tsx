@@ -1,18 +1,15 @@
 import ScrollFlipCard from "./components/ScrollFlipCard";
+import AboutSection from "./components/AboutSection";
 
 export default function Home() {
   return (
     <>
-      {/* <section className="h-screen bg-neutral-900 flex items-center justify-center">
-        
-      </section> */}
+      <h1 className="text-white">Binary 2k26</h1>
 
       <ScrollFlipCard />      
 
-      <section className="h-screen bg-white flex items-center justify-center">
-        <h2 className="text-5xl font-bold">
-          Fully Transitioned Section
-        </h2>
+      <section className="h-screen bg-black flex items-center justify-center z-100">
+        <AboutSection />
       </section>
     </>
   );

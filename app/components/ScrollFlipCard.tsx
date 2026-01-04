@@ -1,6 +1,6 @@
 "use client";
-
 import { useEffect, useRef, useState } from "react";
+import AboutSection from "./AboutSection";
 
 const clamp = (v: number, min: number, max: number) =>
   Math.min(Math.max(v, min), max);
@@ -8,9 +8,9 @@ const clamp = (v: number, min: number, max: number) =>
 export default function ScrollFlipCard() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-const targetProgress = useRef(0);   // raw scroll
-const smoothProgress = useRef(0);   // delayed animation
-const [, forceRender] = useState(0);
+  const targetProgress = useRef(0); // raw scroll
+  const smoothProgress = useRef(0); // delayed animation
+  const [, forceRender] = useState(0);
 
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
@@ -18,52 +18,48 @@ const [, forceRender] = useState(0);
   useEffect(() => {
     const onScroll = () => {
       if (!sectionRef.current) return;
-  
+
       const sectionTop = sectionRef.current.offsetTop;
       const sectionHeight = sectionRef.current.offsetHeight;
       const windowHeight = window.innerHeight;
-  
+
       const start = sectionTop;
       const end = sectionTop + sectionHeight - windowHeight;
-  
+
       const raw = (window.scrollY - start) / (end - start);
       targetProgress.current = clamp(raw, 0, 1);
     };
-  
+
     window.addEventListener("scroll", onScroll);
     onScroll();
-  
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   // Delay Creation
   useEffect(() => {
     let rafId: number;
-  
+
     const animate = () => {
       // Adjust 0.08 to control delay
       smoothProgress.current +=
         (targetProgress.current - smoothProgress.current) * 0.05;
-  
-      forceRender(v => v + 1);
+
+      forceRender((v) => v + 1);
       rafId = requestAnimationFrame(animate);
     };
-  
+
     animate();
-  
+
     return () => cancelAnimationFrame(rafId);
   }, []);
-  
+
   const p = smoothProgress.current;
 
   const SHRINK_END = 0.4;
 
   const shrinkProgress = clamp(p / SHRINK_END, 0, 1);
-  const flipProgress = clamp(
-    (p - SHRINK_END) / (1 - SHRINK_END),
-    0,
-    1
-  );
+  const flipProgress = clamp((p - SHRINK_END) / (1 - SHRINK_END), 0, 1);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (flipProgress > 0) return;
@@ -86,8 +82,8 @@ const [, forceRender] = useState(0);
   // Phase 1: fullscreen → card
   const shrinkScale = 1 - shrinkProgress * 0.75;
 
-  // Phase 2: card → flip + grow
-  const flipScale = 0.25 + flipProgress * 3.75;
+  // Phase 2: card → flip + grow back to 1:1 so AboutSection stays true-to-size
+  const flipScale = 0.25 + flipProgress * 0.75;
 
   const scale = p < SHRINK_END ? shrinkScale : flipScale;
 
@@ -134,11 +130,9 @@ const [, forceRender] = useState(0);
                     alt="First Section"
                     className="w-full h-full object-cover"
                   /> */}
-                  <h2
-                className="text-4xl font-bold text-white"
-              >
-                First Section
-              </h2>
+                  <h2 className="text-4xl font-bold text-white">
+                    First Section
+                  </h2>
                 </div>
               </div>
             </div>
@@ -149,15 +143,9 @@ const [, forceRender] = useState(0);
               className="absolute inset-0 face-hidden rotate-y-180
                           flex items-center justify-center"
             >
-              <h2
-                style={{
-                  opacity: textOpacity,
-                  transform: `translateY(${textY}px)`,
-                }}
-                className="text-4xl font-bold text-green-900 text-lg lg:text-3xl"
-              >
-                Next Section
-              </h2>
+              <section className="h-screen bg-black flex items-center justify-center z-100">
+                <AboutSection />
+              </section>
             </div>
           </div>
         </div>

@@ -6,13 +6,11 @@ export default function Home() {
   return (
     <>
       <h1 className="text-white">Binary 2k26</h1>
-
-      <ScrollFlipCard />      
-      <Timeline />
-
-      <section className="h-screen bg-black flex items-center justify-center z-100">
+      <ScrollFlipCard />
+      {/* <section className="h-screen bg-black flex items-center justify-center z-100">
         <AboutSection />
-      </section>
+      </section> */}
+      <Timeline />
     </>
   );
 }

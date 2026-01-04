@@ -19,6 +19,11 @@ import PacmanPathSVG from "./PacmanPathSVG";
 
 const Timeline = () => {
   useEffect(() => {
+    const viewportHeight = typeof window !== "undefined" ? window.innerHeight : 900;
+    const desktopScrollRange = viewportHeight * 2.5;
+    const tabScrollRange = viewportHeight * 2;
+    const mobileScrollRange = viewportHeight * 1.6;
+
     // Pacman Chomp Animation Shape
     // Pacman Chomp Animation Shapes
     const pacman_mobile_closed =
@@ -36,9 +41,7 @@ const Timeline = () => {
       repeat: -1,
       yoyo: true,
     });
-
-    // Desktop/Tab Animation
-    gsap.to([".pattern-rect-desktop", ".pattern-rect-tab"], {
+    gsap.to(".pattern-rect-desktop", {
       attr: { d: pacman_desktop_closed },
       duration: 0.2,
       ease: "power1.inOut",
@@ -67,8 +70,8 @@ const Timeline = () => {
           scrollTrigger: {
             trigger: desktopSvg,
             start: "top 30%",
-            end: "bottom bottom",
-            scrub: 2,
+            end: `+=${desktopScrollRange}`,
+            scrub: 1,
           },
         }
       );
@@ -89,8 +92,8 @@ const Timeline = () => {
         scrollTrigger: {
           trigger: desktopSvg,
           start: "top 30%",
-          end: "bottom bottom",
-          scrub: 2,
+          end: `+=${desktopScrollRange}`,
+          scrub: 1,
         },
       });
     }
@@ -114,33 +117,33 @@ const Timeline = () => {
           scrollTrigger: {
             trigger: tabSvg,
             start: "top 20%",
-            end: "bottom bottom",
-            scrub: 2,
+            end: `+=${tabScrollRange}`,
+            scrub: 0.7,
           },
         }
       );
 
-        gsap.to(tabPacman, {
-            motionPath: {
-                path: tabPath,
-                align: tabPath,
-                alignOrigin: [0.5, 0.5],
-                autoRotate: true,
-                start: 0, 
-                end: 1,
-            },
-            transformOrigin: "50% 50%",
-            duration: 5,
-            ease: "none",
-            immediateRender: true,
-            scrollTrigger: {
-                trigger: tabSvg,
-                start: "top 20%",
-                end: "bottom bottom",
-                scrub: 2,
-                markers: false,
-            },
-        });
+      gsap.to(tabPacman, {
+        motionPath: {
+          path: tabPath,
+          align: tabPath,
+          alignOrigin: [0.5, 0.5],
+          autoRotate: true,
+          start: 0,
+          end: 1,
+        },
+        transformOrigin: "50% 50%",
+        duration: 5,
+        ease: "none",
+        immediateRender: true,
+        scrollTrigger: {
+          trigger: tabSvg,
+          start: "top 20%",
+          end: `+=${tabScrollRange}`,
+          scrub: 0.7,
+          markers: false,
+        },
+      });
     }
 
     // --- Mobile (Phone) Animation ---
@@ -162,8 +165,8 @@ const Timeline = () => {
           scrollTrigger: {
             trigger: mobileSvg,
             start: "top 20%",
-            end: "bottom 70%",
-            scrub: 1,
+            end: `+=${mobileScrollRange}`,
+            scrub: 0.6,
           },
         }
       );
@@ -184,8 +187,8 @@ const Timeline = () => {
         scrollTrigger: {
           trigger: mobileSvg,
           start: "top 20%",
-          end: "bottom 70%",
-          scrub: 1,
+          end: `+=${mobileScrollRange}`,
+          scrub: 0.6,
         },
       });
     }
@@ -195,7 +198,7 @@ const Timeline = () => {
       scrollTrigger: {
         trigger: ".desktop-svg",
         start: "top 30%",
-        end: "bottom bottom",
+        end: `+=${desktopScrollRange}`,
         scrub: 2,
       },
     });
@@ -226,7 +229,7 @@ const Timeline = () => {
       scrollTrigger: {
         trigger: ".tab-svg",
         start: "top 20%",
-        end: "bottom bottom",
+        end: `+=${tabScrollRange}`,
         scrub: 2,
       },
     });
@@ -260,7 +263,7 @@ const Timeline = () => {
       scrollTrigger: {
         trigger: ".mobile-svg",
         start: "top 20%",
-        end: "bottom 70%",
+        end: `+=${mobileScrollRange}`,
         scrub: 1,
       },
     });
@@ -279,7 +282,7 @@ const Timeline = () => {
   }, []);
 
   return (
-    <PageSection id="timeline justify-center">
+    <PageSection id="timeline" disableMinHeight className="justify-center py-16">
       <div className="mb-10 ">
         <div className="mx:text-[4rem] mb-10 mt-16 font-pixelate text-[3rem] font-bold text-white">
           <div className="shad relative w-full overflow-x-hidden pt-5 text-xl sm:hidden">
@@ -313,7 +316,7 @@ const Timeline = () => {
         </div>
         <div className="">
           {/* Desktop View */}
-          <div className="main-bar relative w-full h-[1600px] z-20 hidden lg:block">
+          <div className="main-bar relative hidden w-full z-20 lg:block">
             {/* Background SVG */}
             <div className="absolute top-0 left-0 w-full h-full z-0 overflow-x-hidden pointer-events-none select-none transform-gpu">
               <PacmanPathSVG
@@ -325,9 +328,9 @@ const Timeline = () => {
             </div>
 
             {/* Content Overlay */}
-            <div className="relative z-10 w-full h-full flex justify-between">
+            <div className="relative z-10 flex w-full justify-between">
               {/* Left Side (Odd Items) */}
-              <div className="left-side w-1/2 h-full flex flex-col gap-[3rem] items-end pr-[10%]">
+              <div className="left-side flex w-1/2 flex-col items-end gap-[3rem] pr-[10%]">
                 <MiddleTimelineBox
                   className="first-timeline-box mb-10 mt-[10rem]"
                   title="3rd March"
@@ -346,7 +349,7 @@ const Timeline = () => {
               </div>
 
               {/* Right Side (Even Items) */}
-              <div className="right-side w-1/2 h-full flex flex-col gap-[1.2rem] items-start pl-[10%]">
+              <div className="right-side flex w-1/2 flex-col items-start gap-[1.2rem] pl-[10%]">
                 <MiddleTimelineBox
                   className="second-timeline-box mt-[3rem]"
                   title="25th March"
@@ -367,7 +370,7 @@ const Timeline = () => {
           </div>
 
           {/* Tab View */}
-          <div className="tab-bar relative w-full h-[1600px] z-20 hidden md:block lg:hidden">
+          <div className="tab-bar relative hidden w-full z-20 md:block lg:hidden">
             {/* Background SVG */}
             <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden pointer-events-none select-none transform-gpu">
               <PacmanPathSVG
@@ -380,9 +383,9 @@ const Timeline = () => {
             </div>
 
             {/* Content Overlay */}
-            <div className="relative z-10 w-full h-full flex justify-between pointer-events-none">
+            <div className="relative z-10 flex w-full justify-between pointer-events-none">
               {/* Left Side */}
-              <div className="left-side w-1/2 h-full flex flex-col mt-[5rem] pl-[5%] gap-[5rem] items-end pr-[2%] pointer-events-auto">
+              <div className="left-side pointer-events-auto flex w-1/2 flex-col items-end gap-[5rem] pl-[5%] pr-[2%] pt-[5rem]">
                 <MiddleTimelineBox
                   className="first-timeline-box-tab mb-5 mt-[7rem] transform scale-125 pl-[%] origin-right"
                   title="3rd March"
@@ -401,7 +404,7 @@ const Timeline = () => {
               </div>
 
               {/* Right Side */}
-              <div className="right-side w-1/2 h-full flex flex-col gap-[1rem] items-start pl-[2%] pointer-events-auto">
+              <div className="right-side pointer-events-auto flex w-1/2 flex-col items-start gap-[1rem] pl-[2%]">
                 <MiddleTimelineBox
                   className="second-timeline-box-tab mt-[25rem] transform scale-125 origin-left"
                   title="25th March"
@@ -421,14 +424,14 @@ const Timeline = () => {
             </div>
           </div>
           {/*Mobile View*/}
-          <div className="relative max-w-[48rem] h-[100vh] md:hidden   justify-center ">
+          <div className="relative max-w-[48rem] md:hidden">
             <PacmanPathMobileSVG
-              className_svg="mobile-svg absolute  md:hidden left-[10px] max-w-1/7 h-[917px] transform scale-90 origin-top-left stroke-green-600"
-              className_path=" w-[100%]  flex flex-col items-center justify-center  h-[1200px] stroke-green-600"
+              className_svg="mobile-svg absolute inset-0 w-full h-full transform scale-90 origin-top-left stroke-green-600"
+              className_path="w-full h-full stroke-green-600"
               pathId="path-mobile"
               pacmanClass="pattern-rect-mobile"
             />
-            <div className="z-10 absolute  flex flex-col gap-[2.5rem] w-full h-[1600px] md:hidden font-['SF_Pixelate']">
+            <div className="relative z-10 flex w-full flex-col gap-[2.5rem] font-['SF_Pixelate']">
               {timeline.map((item, index) => (
                 <div
                   key={index}

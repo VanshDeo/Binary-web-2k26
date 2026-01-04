@@ -1,17 +1,13 @@
-'use client';
-
+"use client";
 
 import Gallary from "./components/gallary";
 import ScrollFlipCard from "./components/ScrollFlipCard";
 import Tracks from "./components/Tracks";
 import Mentors from "./components/Mentors";
 import Timeline from "./components/Timeline";
-import AboutSection from "./components/AboutSection"
-import { useState } from 'react';
-import SpaceInvadersLoading from '@/components/SpaceInvadersLoading';
-import HelloWorld from '@/components/HelloWorld';
-import PixelTransition from '@/components/PixelTransition';
-
+import { useState } from "react";
+import SpaceInvadersLoading from "@/components/SpaceInvadersLoading";
+import PixelTransition from "@/components/PixelTransition";
 
 export default function HomePage() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -31,41 +27,24 @@ export default function HomePage() {
 
   return (
     <>
-    <div className="min-h-screen bg-black text-white relative">
-      <PixelTransition isActive={transitionActive} />
+      <div className="min-h-screen bg-black text-white relative">
+        <PixelTransition isActive={transitionActive} />
 
-      {isLoading ? (
-        <SpaceInvadersLoading
-          onLoadingComplete={handleLoadingComplete}
-          onTransitionChange={setTransitionActive}
-        />
-      ) : (
-        <div className="flex items-center justify-center min-h-screen p-8">
-          <h1 className="text-white">Binary 2k26</h1>
-      <ScrollFlipCard />
-      {/* <section className="h-screen bg-black flex items-center justify-center z-100">
-
-      <ScrollFlipCard />
-
-      <section className="h-screen bg-black flex items-center justify-center z-100">
-        <AboutSection />
-      </section> */}
-      <Timeline />
-      <section className="h-screen bg-white flex items-center justify-center">
-        <h2 className="text-5xl font-bold">
-          Fully Transitioned Section
-        </h2>
-      </section>
-      <Tracks />
-      <Mentors />
-
-      <Timeline />
-
-      <Gallary />
-        </div>
-      )}
-    </div>
+        {isLoading ? (
+          <SpaceInvadersLoading
+            onLoadingComplete={handleLoadingComplete}
+            onTransitionChange={setTransitionActive}
+          />
+        ) : (
+          <main className="flex flex-col gap-24">
+            <ScrollFlipCard />
+            <Timeline />
+            <Tracks />
+            <Mentors />
+            <Gallary />
+          </main>
+        )}
+      </div>
     </>
-
   );
 }

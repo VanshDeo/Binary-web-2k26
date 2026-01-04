@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { Marquee } from "./magicui/marquee";
+import PageSection from '../hooks/PageSection';
 
 const teamMembers = [
     {
@@ -90,13 +91,13 @@ const TeamMemberCard = ({ img, name, username, role, expertise, onClick, highlig
 
     return (
         <div
-            className="relative w-full max-w-xs group/card cursor-pointer"
+            className="relative w-full group/card cursor-pointer"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             onClick={onClick}
         >
             <div className={`
-        relative overflow-hidden rounded-3xl border border-white/10 
+        relative h-full w-full overflow-hidden rounded-3xl border border-white/10 
         bg-gradient-to-b from-white/[0.08] via-white/[0.04] to-transparent
         ${gradientClass}
         p-8 shadow-2xl backdrop-blur-xl
@@ -247,13 +248,11 @@ const Mentors = () => {
     };
 
     return (
-        <section id="mentors" className="relative py-24 overflow-hidden bg-black text-white">
+        <PageSection id="mentors" disableMinHeight className="relative overflow-hidden bg-black text-white py-24">
             {/* Animated background */}
-            {/* Animated background removed */}
-            <div className="absolute inset-0 pointer-events-none">
-            </div>
+            <div className="absolute inset-0 pointer-events-none"></div>
 
-            <div className="relative mx-auto max-w-7xl px-4">
+            <div className="relative">
                 {/* Header */}
                 <div className="mx-auto max-w-2xl text-center">
                     <h2 className="text-4xl font-bold font-mono text-center text-green-500 mb-16 tracking-tight">
@@ -267,52 +266,55 @@ const Mentors = () => {
 
                 {/* Team marquee - Slower animations */}
                 {/* Desktop Layout - Vertical Columns */}
-                <div className="mt-10 hidden md:flex justify-center gap-8 max-h-[800px] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
-                    <div className="hidden lg:block">
-                        <Marquee pauseOnHover vertical className="[--duration:45s]">
+                <div className="mt-10 hidden w-full md:flex gap-8 max-h-[800px] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
+                    <div className="hidden w-full flex-1 lg:block">
+                        <Marquee pauseOnHover vertical className="w-full [--duration:45s]">
                             {firstColumn.map((member) => (
-                                <TeamMemberCard
-                                    key={member.name}
-                                    {...member}
-                                    highlightDirection="tr-bl"
-                                    onClick={() => handleCardClick(member)}
-                                />
+                                <div key={member.name} className="w-full">
+                                    <TeamMemberCard
+                                        {...member}
+                                        highlightDirection="tr-bl"
+                                        onClick={() => handleCardClick(member)}
+                                    />
+                                </div>
                             ))}
                         </Marquee>
                     </div>
 
-                    <div className="hidden md:block">
-                        <Marquee reverse pauseOnHover vertical className="[--duration:45s]">
+                    <div className="hidden w-full flex-1 md:block">
+                        <Marquee reverse pauseOnHover vertical className="w-full [--duration:45s]">
                             {secondColumn.map((member) => (
-                                <TeamMemberCard
-                                    key={member.name}
-                                    {...member}
-                                    highlightDirection="tl-br"
-                                    onClick={() => handleCardClick(member)}
-                                />
+                                <div key={member.name} className="w-full">
+                                    <TeamMemberCard
+                                        {...member}
+                                        highlightDirection="tl-br"
+                                        onClick={() => handleCardClick(member)}
+                                    />
+                                </div>
                             ))}
                         </Marquee>
                     </div>
 
-                    <div>
-                        <Marquee pauseOnHover vertical className="[--duration:45s]">
+                    <div className="w-full flex-1">
+                        <Marquee pauseOnHover vertical className="w-full [--duration:45s]">
                             {thirdColumn.map((member) => (
-                                <TeamMemberCard
-                                    key={member.name}
-                                    {...member}
-                                    highlightDirection="tr-bl"
-                                    onClick={() => handleCardClick(member)}
-                                />
+                                <div key={member.name} className="w-full">
+                                    <TeamMemberCard
+                                        {...member}
+                                        highlightDirection="tr-bl"
+                                        onClick={() => handleCardClick(member)}
+                                    />
+                                </div>
                             ))}
                         </Marquee>
                     </div>
                 </div>
 
                 {/* Mobile Layout - Horizontal Marquee */}
-                <div className="mt-10 md:hidden block overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-                    <Marquee pauseOnHover className="[--duration:45s]">
+                <div className="mt-10 block w-full overflow-hidden md:hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                    <Marquee pauseOnHover className="w-full [--duration:45s]">
                         {teamMembers.map((member) => (
-                            <div key={member.name} className="px-4">
+                            <div key={member.name} className="w-64 px-4">
                                 <TeamMemberCard
                                     {...member}
                                     highlightDirection="tr-bl"
@@ -330,7 +332,7 @@ const Mentors = () => {
                 isOpen={isPopupOpen}
                 onClose={closePopup}
             />
-        </section>
+        </PageSection>
     );
 };
 

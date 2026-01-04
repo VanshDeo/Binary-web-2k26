@@ -143,18 +143,11 @@ export default function ScrollFlipCard() {
               className="absolute inset-0 face-hidden rotate-y-180
                           flex items-center justify-center"
             >
-              <section className="h-screen bg-black flex items-center justify-center z-100">
-                <AboutSection />
-              </section>
-              <h2
-                style={{
-                  opacity: textOpacity,
-                  transform: `translateY(${textY}px)`,
-                }}
-                className="text-4xl font-bold text-green-900 text-lg lg:text-3xl"
-              >
-                Binary
-              </h2>
+              <div className="h-screen w-full bg-black flex items-center justify-center z-100">
+                <div className="w-full">
+                  <AboutSection />
+                </div>
+              </div>
             </div>
           </div>
         </div>

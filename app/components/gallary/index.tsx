@@ -1,11 +1,10 @@
-"use client"
+"use client";
 
 import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
-// import styles from "./styles.module.scss";
-import styles from "./styles.module.css"
+import styles from "./styles.module.css";
 import Image from "next/image";
-// import Image from "next/image";
+import PageSection from "../../hooks/PageSection";
 
 interface SliderItem {
   color: string;
@@ -61,36 +60,43 @@ const Gallary = () => {
   const x2 = useTransform(scrollYProgress, [0, 1], [0, -150]);
 
   return (
-    <div ref={container} className={styles.slidingImages}>
-      <motion.div style={{ x: x1 }} className={styles.slider}>
-        {slider1.map((project, index) => (
-          <div
-            key={index}
-            className={styles.project}
-            style={{ backgroundColor: project.color }}
-          >
-            <div className={styles.imageContainer}>
-              <Image fill={true} alt={"image"} src={`/images/${project.src}`} />
+    <PageSection id="gallery" disableMinHeight className="bg-black py-24 text-white">
+      <div className="flex flex-col gap-12">
+        <div className="text-center">
+          <p className="text-sm uppercase tracking-[0.3em] text-green-400">Highlights</p>
+          <h2 className="text-4xl font-bold font-mono text-green-500">&lt;Gallery /&gt;</h2>
+        </div>
 
-
-            </div>
-          </div>
-        ))}
-      </motion.div>
-      <motion.div style={{ x: x2 }} className={styles.slider}>
-        {slider2.map((project, index) => (
-          <div
-            key={index}
-            className={styles.project}
-            style={{ backgroundColor: project.color }}
-          >
-            <div className={styles.imageContainer}>
-              <Image fill={true} alt={"image"} src={`/images/${project.src}`} />
-            </div>
-          </div>
-        ))}
-      </motion.div>
-    </div>
+        <div ref={container} className={styles.slidingImages}>
+          <motion.div style={{ x: x1 }} className={styles.slider}>
+            {slider1.map((project, index) => (
+              <div
+                key={index}
+                className={styles.project}
+                style={{ backgroundColor: project.color }}
+              >
+                <div className={styles.imageContainer}>
+                  <Image fill alt="gallery image" src={`/images/${project.src}`} />
+                </div>
+              </div>
+            ))}
+          </motion.div>
+          <motion.div style={{ x: x2 }} className={styles.slider}>
+            {slider2.map((project, index) => (
+              <div
+                key={index}
+                className={styles.project}
+                style={{ backgroundColor: project.color }}
+              >
+                <div className={styles.imageContainer}>
+                  <Image fill alt="gallery image" src={`/images/${project.src}`} />
+                </div>
+              </div>
+            ))}
+          </motion.div>
+        </div>
+      </div>
+    </PageSection>
   );
 };
 

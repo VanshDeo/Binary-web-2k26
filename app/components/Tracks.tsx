@@ -1,5 +1,6 @@
 import { GraduationCap, HeartPulse, Box, Brain, Wifi, Lightbulb, Sprout, Users } from 'lucide-react';
 import PixelTransition from './PixelTransition';
+import PageSection from '../hooks/PageSection';
 
 const Tracks = () => {
     const tracks = [
@@ -54,51 +55,51 @@ const Tracks = () => {
     ];
 
     return (
-        <section id="tracks" className="py-20 bg-black text-white relative">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h2 className="text-4xl font-bold font-mono text-center text-green-500 mb-16 tracking-tight">
+        <PageSection id="tracks" disableMinHeight className="relative bg-black text-white py-20">
+            <div className="text-center mb-16">
+                <h2 className="text-4xl font-bold font-mono text-green-500 tracking-tight">
                     &lt;Tracks /&gt;
                 </h2>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 place-items-center">
-                    {tracks.map((track, index) => (
-                        <PixelTransition
-                            key={index}
-                            firstContent={
-                                <div className="flex flex-col items-center justify-center h-full w-full p-6">
-                                    <div className="mb-4 transform transition-transform duration-300 group-hover:scale-110">
-                                        {track.icon}
-                                    </div>
-                                    <h3 className="text-2xl font-bold font-mono text-gray-100">{track.title}</h3>
-                                </div>
-                            }
-                            secondContent={
-                                <div
-                                    style={{
-                                        width: "100%",
-                                        height: "100%",
-                                        display: "grid",
-                                        placeItems: "center",
-                                        backgroundColor: "#111",
-                                        padding: "1rem"
-                                    }}
-                                >
-                                    <p className="text-center font-mono font-bold text-xl" style={{ color: track.color }}>
-                                        {track.description}
-                                    </p>
-                                </div>
-                            }
-                            gridSize={12}
-                            pixelColor={track.color}
-                            once={false}
-                            animationStepDuration={0.4}
-                            className="w-full h-[300px] border border-neutral-800 bg-neutral-900/50 hover:border-green-500/50 transition-colors group"
-                            aspectRatio="100%"
-                        />
-                    ))}
-                </div>
             </div>
-        </section>
+
+            <div className="grid grid-cols-1 gap-8 place-items-center md:grid-cols-2 lg:grid-cols-4">
+                {tracks.map((track, index) => (
+                    <PixelTransition
+                        key={index}
+                        firstContent={
+                            <div className="flex h-full w-full flex-col items-center justify-center p-6">
+                                <div className="mb-4 transform transition-transform duration-300 group-hover:scale-110">
+                                    {track.icon}
+                                </div>
+                                <h3 className="text-2xl font-bold font-mono text-gray-100">{track.title}</h3>
+                            </div>
+                        }
+                        secondContent={
+                            <div
+                                style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    display: 'grid',
+                                    placeItems: 'center',
+                                    backgroundColor: '#111',
+                                    padding: '1rem',
+                                }}
+                            >
+                                <p className="text-center font-mono font-bold text-xl" style={{ color: track.color }}>
+                                    {track.description}
+                                </p>
+                            </div>
+                        }
+                        gridSize={12}
+                        pixelColor={track.color}
+                        once={false}
+                        animationStepDuration={0.4}
+                        className="group h-[300px] w-full border border-neutral-800 bg-neutral-900/50 transition-colors hover:border-green-500/50"
+                        aspectRatio="100%"
+                    />
+                ))}
+            </div>
+        </PageSection>
     );
 };
 

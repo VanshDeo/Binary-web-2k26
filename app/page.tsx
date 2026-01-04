@@ -8,7 +8,6 @@ import Timeline from "./components/Timeline";
 import { useState } from "react";
 import SpaceInvadersLoading from "@/components/SpaceInvadersLoading";
 import PixelTransition from "@/components/PixelTransition";
-import AboutSection from "./components/AboutSection";
 import Navbar from "./components/Navbar";
 
 export default function Home() {

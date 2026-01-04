@@ -1,3 +1,5 @@
+
+import Gallary from "./components/gallary";
 import ScrollFlipCard from "./components/ScrollFlipCard";
 
 export default function Home() {
@@ -14,6 +16,8 @@ export default function Home() {
           Fully Transitioned Section
         </h2>
       </section>
+
+      <Gallary />
     </>
   );
 }

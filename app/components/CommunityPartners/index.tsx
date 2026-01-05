@@ -20,7 +20,7 @@ import "swiper/css/autoplay";
 
 interface MemberComponentProps {
   url: string;
-  imageUrl: string | StaticImageData;
+  imageUrl: string; // use string for public folder paths
 }
 
 const Section = styled.section<{ theme: { body: string } }>`
@@ -34,6 +34,11 @@ const MemberComponent: React.FC<MemberComponentProps> = ({
   url = "",
   imageUrl = "",
 }) => {
+  // ensure proper public path (leading slash required)
+  const src = imageUrl?.toString().startsWith("/")
+    ? imageUrl.toString()
+    : `/${imageUrl}`;
+
   return (
     <a
       href={url}
@@ -42,7 +47,7 @@ const MemberComponent: React.FC<MemberComponentProps> = ({
       className="flex justify-center items-center"
     >
       <Image
-        src={imageUrl}
+        src={src}
         alt="Community Partner"
         width={500}
         height={500}

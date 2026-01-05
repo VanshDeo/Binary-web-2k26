@@ -30,7 +30,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable}`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} bg-black`}>
         {children}
       </body>
     </html>

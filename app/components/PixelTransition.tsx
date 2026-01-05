@@ -3,8 +3,8 @@ import React, { useRef, useEffect, useState, type CSSProperties } from 'react';
 import { gsap } from 'gsap';
 
 interface PixelTransitionProps {
-    firstContent: React.ReactNode | string;
-    secondContent: React.ReactNode | string;
+    firstContent?: React.ReactNode | string;
+    secondContent?: React.ReactNode | string;
     gridSize?: number;
     pixelColor?: string;
     animationStepDuration?: number;
@@ -12,6 +12,7 @@ interface PixelTransitionProps {
     className?: string;
     style?: CSSProperties;
     aspectRatio?: string;
+    isActive?: boolean;
 }
 
 const PixelTransition: React.FC<PixelTransitionProps> = ({
@@ -23,7 +24,8 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
     once = false,
     aspectRatio = '100%',
     className = '',
-    style = {}
+    style = {},
+    isActive: externalIsActive // Destructure the new prop
 }) => {
     const containerRef = useRef<HTMLDivElement | null>(null);
     const pixelGridRef = useRef<HTMLDivElement | null>(null);
@@ -41,6 +43,13 @@ const PixelTransition: React.FC<PixelTransitionProps> = ({
             );
         }
     }, []);
+
+    // Effect to handle external isActive prop changes
+    useEffect(() => {
+        if (typeof externalIsActive !== 'undefined' && externalIsActive !== isActive) {
+            animatePixels(externalIsActive);
+        }
+    }, [externalIsActive]);
 
     useEffect(() => {
         const pixelGridEl = pixelGridRef.current;

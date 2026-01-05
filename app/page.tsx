@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import SpaceInvadersLoading from './components/preloader/SpaceInvadersLoading';
-import PixelTransition from './components/preloader/PixelTransition';
+import { useState } from "react";
+import SpaceInvadersLoading from "./components/preloader/SpaceInvadersLoading";
+import PixelTransition from "./components/preloader/PixelTransition";
 
 import Gallary from "./components/gallary";
 import ScrollFlipCard from "./components/ScrollFlipCard";
@@ -11,6 +11,8 @@ import Mentors from "./components/Mentors";
 import Timeline from "./components/Timeline";
 import AboutSection from "./components/AboutSection";
 import Navbar from "./components/Navbar";
+import FAQs from "./components/Faq";
+import Footer from "./components/Footer";
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -50,6 +52,8 @@ export default function Home() {
             <Mentors />
             <Timeline />
             <Gallary />
+            <FAQs />
+            <Footer />
           </>
         )}
       </div>

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import PixelTransition from './PixelTransition';
-
 interface SpaceInvadersLoadingProps {
     onLoadingComplete?: () => void;
     onTransitionChange: (active: boolean) => void;

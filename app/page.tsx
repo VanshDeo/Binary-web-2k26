@@ -15,10 +15,19 @@ import FAQs from "./components/Faq";
 import Footer from "./components/Footer";
 import CommunityPartners from "./components/CommunityPartners";
 import Sponsors from "./components/Sponsors";
+import Hero from './components/Hero';
+import { useInView } from 'react-intersection-observer';
+
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [transitionActive, setTransitionActive] = useState<boolean>(false);
+
+  const [heroTopRef, heroTopInView] = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+    initialInView: true,
+  });
 
   // When loading finishes, we wait a moment for the exit transition to be solid
   const handleLoadingComplete = () => {
@@ -45,8 +54,8 @@ export default function Home() {
         ) : (
           <>
             <Navbar />
-            <h1 className="text-white">Binary 2k26</h1>
             <ScrollFlipCard />
+            {/* <Hero heroTopRef={heroTopRef}/> */}
               <AboutSection />
             <Tracks />
             <Mentors />

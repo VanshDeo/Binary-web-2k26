@@ -1,6 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Hero from '../components/Hero';
+import { useInView } from 'react-intersection-observer';
 
 const clamp = (v: number, min: number, max: number) =>
   Math.min(Math.max(v, min), max);
@@ -8,73 +10,136 @@ const clamp = (v: number, min: number, max: number) =>
 export default function ScrollFlipCard() {
   const sectionRef = useRef<HTMLDivElement>(null);
 
-const targetProgress = useRef(0);   // raw scroll
-const smoothProgress = useRef(0);   // delayed animation
-const [, forceRender] = useState(0);
+  // Animation Refs
+  const cardRef = useRef<HTMLDivElement>(null);
+  const frontFaceRef = useRef<HTMLDivElement>(null);
+  const backFaceRef = useRef<HTMLDivElement>(null);
+  const heroWrapperRef = useRef<HTMLDivElement>(null);
 
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const targetProgress = useRef(0);   // raw scroll
+  const smoothProgress = useRef(0);   // delayed animation
+
+  const tiltRef = useRef({ x: 0, y: 0 });
+
+  const [heroTopRef, heroTopInView] = useInView({
+    threshold: 0.5,
+    triggerOnce: true,
+    initialInView: true,
+  });
 
   /* ---------------- SCROLL LOGIC ---------------- */
   useEffect(() => {
     const onScroll = () => {
       if (!sectionRef.current) return;
-  
+
       const sectionTop = sectionRef.current.offsetTop;
       const sectionHeight = sectionRef.current.offsetHeight;
       const windowHeight = window.innerHeight;
-  
+
       const start = sectionTop;
       const end = sectionTop + sectionHeight - windowHeight;
-  
+
       const raw = (window.scrollY - start) / (end - start);
       targetProgress.current = clamp(raw, 0, 1);
     };
-  
+
     window.addEventListener("scroll", onScroll);
     onScroll();
-  
+
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Delay Creation
+  // Animation Loop
   useEffect(() => {
     let rafId: number;
-  
+
     const animate = () => {
-      // Adjust 0.08 to control delay
-      smoothProgress.current +=
-        (targetProgress.current - smoothProgress.current) * 0.05;
-  
-      forceRender(v => v + 1);
+      const diff = targetProgress.current - smoothProgress.current;
+
+      // Always run animation to handle tilt updates as well, or we can check tilt diff too.
+      // For simplicity and smoothness, we'll run it. 
+      // To optimize: only run if scroll diff > epsilon OR tilt changed (complex to track).
+      // Given the previous issue was React Render loop, a purely JS loop is much cheaper.
+      // We'll proceed with standard lerp.
+
+      if (Math.abs(diff) > 0.0001) {
+        smoothProgress.current += diff * 0.05;
+      }
+
+      /* ---------------- ANIMATION CALCULATIONS ---------------- */
+      const p = smoothProgress.current;
+      const SHRINK_END = 0.35;
+      const HOLD_END = 0.5;
+
+      const shrinkProgress = clamp(p / SHRINK_END, 0, 1);
+      // const holdProgress = clamp((p - SHRINK_END) / (HOLD_END - SHRINK_END), 0, 1);
+      const flipProgress = clamp((p - HOLD_END) / (1 - HOLD_END), 0, 1);
+
+      // Scale Logic
+      const shrinkScale = 1 - shrinkProgress * 0.75;
+      const holdScale = 0.25;
+      const flipScale = 0.25 + flipProgress * 3.75;
+
+      let scale = shrinkScale;
+      if (p >= SHRINK_END && p < HOLD_END) {
+        scale = holdScale;
+      } else if (p >= HOLD_END) {
+        scale = flipScale;
+      }
+
+      // Inverse Scale Logic for Hero
+      const inverseScale = scale !== 0 ? 1 / scale : 1;
+
+      // Rotation & Radius
+      const rotateY = flipProgress * 180;
+      const radius = 32 - flipProgress * 32;
+
+      // Visibility
+      // showFront if flipProgress < 0.5
+      // showBack if flipProgress >= 0.5
+      const showFront = flipProgress < 0.5;
+      const showBack = flipProgress >= 0.5;
+
+      /* ---------------- DOM UPDATES ---------------- */
+
+      // Update Card Transform
+      if (cardRef.current) {
+        cardRef.current.style.transform = `
+          scale(${scale})
+          rotateY(${rotateY}deg)
+          rotateX(${tiltRef.current.x}deg)
+          rotateY(${tiltRef.current.y}deg)
+        `;
+        cardRef.current.style.borderRadius = `${radius}px`;
+      }
+
+      // Update Faces Opacity
+      if (frontFaceRef.current) {
+        frontFaceRef.current.style.opacity = showFront ? '1' : '0';
+      }
+      if (backFaceRef.current) {
+        backFaceRef.current.style.opacity = showBack ? '1' : '0';
+      }
+
+      // Update Hero Inverse Scale
+      if (heroWrapperRef.current) {
+        heroWrapperRef.current.style.transform = `scale(${inverseScale})`;
+      }
+
       rafId = requestAnimationFrame(animate);
     };
-  
+
     animate();
-  
+
     return () => cancelAnimationFrame(rafId);
-  }, []);
-  
-  const p = smoothProgress.current;
-
-  const SHRINK_END = 0.35;
-  const HOLD_END = 0.5; 
-
-
-  const shrinkProgress = clamp(p / SHRINK_END, 0, 1);
-
-const holdProgress = clamp(
-  (p - SHRINK_END) / (HOLD_END - SHRINK_END),
-  0,
-  1
-);
-
-const flipProgress = clamp(
-  (p - HOLD_END) / (1 - HOLD_END),
-  0,
-  1
-);
+  }, []); // Run once on mount
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    
+    const p = smoothProgress.current;
+    const HOLD_END = 0.5;
+    const flipProgress = clamp((p - HOLD_END) / (1 - HOLD_END), 0, 1);
+
     if (flipProgress > 0) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
@@ -87,50 +152,25 @@ const flipProgress = clamp(
     const rotateX = ((y - centerY) / centerY) * -8;
     const rotateY = ((x - centerX) / centerX) * 8;
 
-    setTilt({ x: rotateX, y: rotateY });
+    tiltRef.current = { x: rotateX, y: rotateY };
   };
 
-  const resetTilt = () => setTilt({ x: 0, y: 0 });
-
-const shrinkScale = 1 - shrinkProgress * 0.75;
-
-const holdScale = 0.25;
-
-const flipScale = 0.25 + flipProgress * 3.75;
-
-let scale = shrinkScale;
-
-if (p >= SHRINK_END && p < HOLD_END) {
-  scale = holdScale; 
-} else if (p >= HOLD_END) {
-  scale = flipScale;
-}
-
-
-  const rotateY = flipProgress * 180;
-  const radius = 32 - flipProgress * 32;
-
-  const showFront = flipProgress < 0.5;
-  const showBack = flipProgress >= 0.5;
-
-  const textOpacity = clamp((flipProgress - 0.5) * 2, 0, 1);
-  const textY = 12 - textOpacity * 12;
+  const resetTilt = () => {
+    tiltRef.current = { x: 0, y: 0 };
+  };
 
   return (
     <section ref={sectionRef} className="relative h-[300vh] bg-black">
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
         <div className="perspective">
           <div
+            ref={cardRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={resetTilt}
             style={{
-              transform: `
-                scale(${scale})
-                rotateY(${rotateY}deg)
-                rotateX(${tilt.x}deg)
-                rotateY(${tilt.y}deg)
-              `,
-              borderRadius: `${radius}px`,
+              // Initial styles to prevent FOUC
+              transform: 'scale(1)',
+              borderRadius: '32px',
             }}
             className="relative w-screen h-screen overflow-hidden
            transition-transform duration-100 ease-out
@@ -138,7 +178,7 @@ if (p >= SHRINK_END && p < HOLD_END) {
           >
             {/* ---------- FRONT FACE ---------- */}
             <div
-              style={{ opacity: showFront ? 1 : 0 }}
+              ref={frontFaceRef}
               className="absolute inset-0 face-hidden
                          transition-opacity duration-200
                          flex items-center justify-center"
@@ -151,31 +191,33 @@ if (p >= SHRINK_END && p < HOLD_END) {
                     className="w-full h-full object-cover"
                   /> */}
                   <h2
-                className="text-4xl font-bold text-white"
-              >
-                First Section
-              </h2>
+                    className="text-4xl font-bold text-white"
+                  >
+                    First Section
+                  </h2>
                 </div>
               </div>
             </div>
 
             {/* ---------- BACK FACE ---------- */}
             <div
-  style={{ opacity: showBack ? 1 : 0 }}
-  className="absolute inset-0 face-hidden rotate-y-180
+              ref={backFaceRef}
+              className="absolute inset-0 face-hidden rotate-y-180
              flex items-center justify-center
              overflow-hidden"
->
-
-              <h2
+              style={{ opacity: 0 }} // Start hidden
+            >
+              {/* Neutralize parent scaling */}
+              <div
+                ref={heroWrapperRef}
                 style={{
-                  opacity: textOpacity,
-                  transform: `translateY(${textY}px)`,
+                  width: "100%",
+                  height: "100%",
                 }}
-                className="text-4xl font-bold text-green-900 text-lg lg:text-3xl"
+                className="origin-center"
               >
-                Binary
-              </h2>
+                <Hero heroTopRef={heroTopRef} />
+              </div>
             </div>
           </div>
         </div>

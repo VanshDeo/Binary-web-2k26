@@ -114,6 +114,7 @@ import { useRef } from "react";
 import { useScroll, useTransform, motion } from "framer-motion";
 import styles from "./styles.module.scss";
 import Image from "next/image";
+import ArcadeHeader from "../ui/ArcadeHeader";
 
 // Split your images into 4 columns
 const slider1 = [{ src: "c2.jpg" }, { src: "decimal.jpg" }];
@@ -144,25 +145,28 @@ const Index = () => {
   ];
 
   return (
-    <div ref={container} className={styles.slidingImages}>
-      {columns.map((column, i) => (
-        <motion.div key={i} style={{ y: column.y }} className={styles.slider}>
-          {column.data.map((project, index) => (
-            <div key={index} className={styles.project}>
-              <div className={styles.imageContainer}>
-                <Image 
-                  fill 
-                  alt="gallery image" 
-                  src={`/images/${project.src}`} 
-                  sizes="25vw"
-                  className={styles.img}
-                />
+    <section id="gallery" className="flex flex-col gap-8 py-20 bg-black">
+      <ArcadeHeader text="Gallery" />
+      <div ref={container} className={styles.slidingImages}>
+        {columns.map((column, i) => (
+          <motion.div key={i} style={{ y: column.y }} className={styles.slider}>
+            {column.data.map((project, index) => (
+              <div key={index} className={styles.project}>
+                <div className={styles.imageContainer}>
+                  <Image
+                    fill
+                    alt="gallery image"
+                    src={`/images/${project.src}`}
+                    sizes="25vw"
+                    className={styles.img}
+                  />
+                </div>
               </div>
-            </div>
-          ))}
-        </motion.div>
-      ))}
-    </div>
+            ))}
+          </motion.div>
+        ))}
+      </div>
+    </section>
   );
 };
 

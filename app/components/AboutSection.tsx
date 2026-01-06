@@ -11,6 +11,7 @@ import ParticleImage, {
   forces,
   ParticleForce,
 } from 'react-particle-image';
+import ArcadeHeader from './ui/ArcadeHeader';
 
 const particleOptions: ParticleOptions = {
   filter: ({ x, y, image }) => {
@@ -62,35 +63,8 @@ const About = () => {
     <PageSection id="about">
       <main className=" ">
         <div className="mt-[96px] md:mt-[116px]">
-          <div className="my-2 mb-8 font-pixelate text-[2rem] font-bold text-white md:text-[3rem]">
-            <div className="shad relative w-full overflow-x-hidden pt-5 text-xl sm:hidden">
-              <h2 className="relative mx-0 mb-10 flex max-w-sm flex-row pt-4 text-left font-pixelate font-bold uppercase md:w-max md:max-w-max md:pt-0">
-                <span className="flex-none pl-1 font-bold tracking-wider text-green-500 opacity-85">
-                  01.
-                </span>
-                <span className="flex-none pl-2 font-bold tracking-wider text-gray-200 opacity-85">
-                  About Binary
-                </span>
-
-                <div className="item-center flex flex-col justify-center">
-                  <div className="right-full ml-4 mt-[10px] h-[4px] w-[70vh] transform bg-green-500"></div>
-                </div>
-              </h2>
-            </div>
-            <div className="shad relative hidden w-full overflow-x-hidden pt-5 sm:block">
-              <h2 className="relative mx-0 mb-10 flex max-w-sm flex-row pt-4 text-left font-pixelate font-bold uppercase md:w-max md:max-w-max md:pt-0">
-                <span className="flex-none pl-4 font-bold tracking-wider text-green-500 opacity-85">
-                  01.
-                </span>
-                <span className="flex-none pl-4 font-bold tracking-wider text-gray-200 opacity-85">
-                  About Binary
-                </span>
-
-                <div className="item-center flex flex-col justify-center">
-                  <div className="top-[50%] ml-4 mt-[25px] h-[1px] w-[70vh] transform bg-[#1d6339]"></div>
-                </div>
-              </h2>
-            </div>
+          <div className="my-2 mb-8 md:text-[3rem]">
+            <ArcadeHeader text="About Binary" />
           </div>
           <div className="grid w-full grid-cols-1 gap-16 md:grid-cols-8">
             <div className="order-2 flex flex-col items-start justify-start md:order-1 md:col-span-5">

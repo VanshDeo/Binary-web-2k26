@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import PageSection from "@/app/hooks/PageSection";
 import { faqItems } from "@/app/constants/faq";
 import BinaryText from "@/app/components/Animations/BinaryText";
+import ArcadeHeader from "../ui/ArcadeHeader";
 import TypeAnimation from "../Animations/Textanimation";
 import useTextScramble from "../Animations/text";
 
@@ -17,40 +18,7 @@ const FAQs = () => {
       <div id="faqs" className="mb-20 text-white sm:mb-20">
         <div>
           <div className="mt-[96px] md:mt-[116px]">
-            <BinaryText
-              className="font-pixelate text-[2rem] font-bold text-white md:text-[3rem]"
-              reveal
-            >
-              <div className="text-center text-white"></div>
-              <div className="shad relative w-full overflow-x-hidden pt-5 text-xl sm:hidden">
-                <h2 className="relative mx-0 mb-10 flex max-w-sm flex-row pt-4 text-left font-pixelate font-bold uppercase md:w-max md:max-w-max md:pt-0">
-                  <span className="flex-none pl-1 font-bold tracking-wider text-green-500 opacity-85">
-                    09.
-                  </span>
-                  <span className="flex-none pl-2 font-bold tracking-wider text-gray-200 opacity-85">
-                    Have a question?
-                  </span>
-
-                  <div className="item-center flex flex-col justify-center">
-                    <div className="right-full ml-4 mt-[10px] h-[1px] w-[70vh] transform bg-[#1d6339]"></div>
-                  </div>
-                </h2>
-              </div>
-              <div className="shad relative hidden w-full overflow-x-hidden pt-5 sm:block">
-                <h2 className="relative mx-0 mb-10 flex max-w-sm flex-row pt-4 text-left font-pixelate font-bold md:w-max md:max-w-max md:pt-0">
-                  <span className="flex-none pl-4 font-bold tracking-wider text-green-500 opacity-85">
-                    09.
-                  </span>
-                  <span className="flex-none pl-4 font-bold tracking-wider text-gray-200 opacity-85">
-                    Have a question?
-                  </span>
-
-                  <div className="item-center flex flex-col justify-center">
-                    <div className="right-full top-[55%] ml-4 mt-[25px] h-[1px] w-[70vh] transform bg-[#1d6339]"></div>
-                  </div>
-                </h2>
-              </div>
-            </BinaryText>
+            <ArcadeHeader text="Have a question?" />
           </div>
           <div className="mx-auto mt-8 min-w-full space-y-4 font-pixelate font-[1rem] md:mt-16 md:w-[calc(50vw)] md:font-[2rem]">
             <ul className="mx-auto max-w-7xl divide-y-[0.1px] divide-[#393939] rounded-xl shadow-md">
@@ -70,9 +38,8 @@ const FAQs = () => {
                       </span>
 
                       <svg
-                        className={`h-5 w-5 text-gray-400 transition group-hover:text-gray-300 group-active:text-gray-200 ${
-                          expandedItemIndex === index ? "rotate-90" : ""
-                        }`}
+                        className={`h-5 w-5 text-gray-400 transition group-hover:text-gray-300 group-active:text-gray-200 ${expandedItemIndex === index ? "rotate-90" : ""
+                          }`}
                         xmlns="http://www.w3.org/2000/svg"
                         width="16"
                         height="16"

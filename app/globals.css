@@ -51,6 +51,56 @@
   }
 
   --animate-glitch: glitch 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) infinite both;
+
+  @keyframes scanline {
+    0% {
+      background-position: 0% 0%;
+    }
+
+    100% {
+      background-position: 0% 100%;
+    }
+  }
+
+  @keyframes flicker {
+
+    0%,
+    18%,
+    22%,
+    25%,
+    53%,
+    57%,
+    100% {
+      opacity: 1;
+    }
+
+    20%,
+    24%,
+    55% {
+      opacity: 0.4;
+    }
+  }
+
+  --animate-flicker: flicker 2.5s infinite;
+}
+
+.scanline {
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0),
+      rgba(255, 255, 255, 0) 50%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.1));
+  animation: scanline 8s linear infinite;
+  background-size: 100% 3px;
+  position: fixed;
+  pointer-events: none;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 @media (prefers-color-scheme: dark) {

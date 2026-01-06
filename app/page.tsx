@@ -1,8 +1,11 @@
+"use client"
 
-import Gallary from "./components/gallary";
+// import Gallary from "./components/gallery/Index";
 import ScrollFlipCard from "./components/ScrollFlipCard";
 import Timeline from "./components/Timeline";
 import AboutSection from "./components/AboutSection";
+import { motion } from "motion/react";
+import ScrollGallery from "./components/horizontal-gallery";
 
 export default function Home() {
   return (
@@ -16,7 +19,18 @@ export default function Home() {
         <AboutSection />
       </section>
 
-      <Gallary />
+      {/* <ScrollGallery /> */}
+
+
+      <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+            >
+            <ScrollGallery />
+      </motion.div>
+
+            
     </>
   );
 }

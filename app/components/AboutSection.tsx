@@ -3,9 +3,8 @@
 // import BinaryText from "../Animations/BinaryText";
 import PageSection from '../hooks/PageSection';
 // import useTextScramble from "../Animations/text";
-import Image from 'next/image';
-import { useGlitch } from 'react-powerglitch';
-import useWindowSize from '../hooks/useWindowSize';
+// import Image from 'next/image';
+// import useWindowSize from '../hooks/useWindowSize';
 import ParticleImage, {
   ParticleOptions,
   Vector,

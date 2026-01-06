@@ -56,49 +56,52 @@ export default function ScrollFlipCard() {
     const animate = () => {
       const diff = targetProgress.current - smoothProgress.current;
 
-      // Always run animation to handle tilt updates as well, or we can check tilt diff too.
-      // For simplicity and smoothness, we'll run it. 
-      // To optimize: only run if scroll diff > epsilon OR tilt changed (complex to track).
-      // Given the previous issue was React Render loop, a purely JS loop is much cheaper.
-      // We'll proceed with standard lerp.
-
       if (Math.abs(diff) > 0.0001) {
         smoothProgress.current += diff * 0.05;
       }
 
       /* ---------------- ANIMATION CALCULATIONS ---------------- */
       const p = smoothProgress.current;
-      const SHRINK_END = 0.35;
-      const HOLD_END = 0.5;
 
-      const shrinkProgress = clamp(p / SHRINK_END, 0, 1);
-      // const holdProgress = clamp((p - SHRINK_END) / (HOLD_END - SHRINK_END), 0, 1);
-      const flipProgress = clamp((p - HOLD_END) / (1 - HOLD_END), 0, 1);
+      const SHRINK_END = 0.3;
+      const FLIP_START = 0.35;
+      const FLIP_END = 0.65;
 
-      // Scale Logic
-      const shrinkScale = 1 - shrinkProgress * 0.75;
-      const holdScale = 0.25;
-      const flipScale = 0.25 + flipProgress * 3.75;
+      let scale = 1;
+      let rotateY = 0;
+      let radius = 32;
+      let scanlineOpacity = 1;
 
-      let scale = shrinkScale;
-      if (p >= SHRINK_END && p < HOLD_END) {
-        scale = holdScale;
-      } else if (p >= HOLD_END) {
-        scale = flipScale;
+      if (p <= SHRINK_END) {
+        // Phase 1: Shrink
+        const prog = clamp(p / SHRINK_END, 0, 1);
+        scale = 1 - prog * 0.75; // 1 -> 0.25
+        scanlineOpacity = 1;
+      } else if (p <= FLIP_START) {
+        // Phase 2: Hold Small
+        scale = 0.25;
+        scanlineOpacity = 1;
+      } else if (p <= FLIP_END) {
+        // Phase 3: Flip (Review Back Card)
+        const prog = clamp((p - FLIP_START) / (FLIP_END - FLIP_START), 0, 1);
+        scale = 0.25 + prog * 3.75; // 0.25 -> 4.0
+        rotateY = prog * 180;
+        radius = 32 * (1 - prog);
+        // Lower scanline opacity as we reveal the back card
+        scanlineOpacity = 1 - prog * 0.85; // 1.0 -> 0.15
+      } else {
+        // Phase 4: Hold Big (User reads content)
+        scale = 4.0;
+        rotateY = 180;
+        radius = 0;
+        scanlineOpacity = 0.15;
       }
 
-      // Inverse Scale Logic for Hero
-      const inverseScale = scale !== 0 ? scale/16 : 1;
+      // Inverse Scale Logic for Hero (Preserved but simplified logic if needed)
+      const inverseScale = scale !== 0 ? scale / 16 : 1;
 
-      // Rotation & Radius
-      const rotateY = flipProgress * 180;
-      const radius = 32 - flipProgress * 32;
-
-      // Visibility
-      // showFront if flipProgress < 0.5
-      // showBack if flipProgress >= 0.5
-      const showFront = flipProgress < 0.5;
-      const showBack = flipProgress >= 0.5;
+      // Update scanline opacity globally
+      document.documentElement.style.setProperty('--scanline-opacity', scanlineOpacity.toString());
 
       /* ---------------- DOM UPDATES ---------------- */
 
@@ -113,13 +116,7 @@ export default function ScrollFlipCard() {
         cardRef.current.style.borderRadius = `${radius}px`;
       }
 
-      // Update Faces Opacity
-      if (frontFaceRef.current) {
-        frontFaceRef.current.style.opacity = showFront ? '1' : '0';
-      }
-      if (backFaceRef.current) {
-        backFaceRef.current.style.opacity = showBack ? '1' : '0';
-      }
+      // Note: We removed manual opacity toggling. We rely on backface-visibility: hidden.
 
       // Update Hero Inverse Scale
       if (heroWrapperRef.current) {
@@ -137,10 +134,10 @@ export default function ScrollFlipCard() {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
 
     const p = smoothProgress.current;
-    const HOLD_END = 0.5;
-    const flipProgress = clamp((p - HOLD_END) / (1 - HOLD_END), 0, 1);
+    const FLIP_START = 0.35;
 
-    if (flipProgress > 0) return;
+    // Disable tilt if flip has started
+    if (p > FLIP_START) return;
 
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -180,9 +177,9 @@ export default function ScrollFlipCard() {
             {/* ---------- FRONT FACE ---------- */}
             <div
               ref={frontFaceRef}
-              className="absolute inset-0 face-hidden
-                         transition-opacity duration-200
-                         flex items-center justify-center"
+              className="absolute inset-0
+              flex items-center justify-center"
+              style={{ backfaceVisibility: 'hidden' }}
             >
               <div className="w-full h-full bg-green-600 p-6">
                 <div className="w-full h-full rounded-3xl overflow-hidden bg-green-500">
@@ -203,10 +200,10 @@ export default function ScrollFlipCard() {
             {/* ---------- BACK FACE ---------- */}
             <div
               ref={backFaceRef}
-              className="absolute inset-0 face-hidden rotate-y-180
+              className="absolute inset-0 rotate-y-180
              flex items-center justify-center
              overflow-hidden"
-              style={{ opacity: 0 }} // Start hidden
+              style={{ backfaceVisibility: 'hidden' }}
             >
               {/* Neutralize parent scaling */}
               <div
@@ -224,6 +221,6 @@ export default function ScrollFlipCard() {
           </div>
         </div>
       </div>
-    </section>
+    </section >
   );
 }

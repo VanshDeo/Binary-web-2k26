@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Press_Start_2P } from "next/font/google"; // Added Press_Start_2P
 import "./globals.css";
+import { Pixelify_Sans } from "next/font/google";
+
+const pixelifySans = Pixelify_Sans({
+  variable: "--font-pixelify",
+  subsets: ["latin"],
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,7 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} bg-black`}>
-        <div className="scanline" />
+        <div className={`scanline ${pixelifySans.variable}`} />
         {children}
       </body>
     </html>

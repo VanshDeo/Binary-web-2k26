@@ -6,12 +6,15 @@ import Image from 'next/image';
 // import { useMediaQuery } from '../../hooks/useMediaQuery';
 import Clock from './Clock';
 
-import { Press_Start_2P } from 'next/font/google';
+import { Pixelify_Sans } from "next/font/google";
+
+const pixelifySans = Pixelify_Sans({
+  variable: "--font-pixelify",
+  subsets: ["latin"],
+});
 
 // import cicada from '@public/images/cicada_trasparent.png';
 import Link from 'next/link';
-
-const pressStart2P = Press_Start_2P({ weight: '400', subsets: ['latin'] });
 
 const Hero = ({ heroTopRef }: { heroTopRef: (node?: Element | null | undefined) => void }) => {
   // const isMobile = useMediaQuery("(max-width: 767px)")
@@ -49,18 +52,18 @@ const Hero = ({ heroTopRef }: { heroTopRef: (node?: Element | null | undefined) 
               <Link
                 href="https://binaryvtwo.devfolio.co/"
                 target="_blank"
-                className={`flex justify-center items-center font-lg font-bold h-full w-full text-center font-pixelate text-white transform cursor-pointer overflow-hidden rounded-xl bg-opacity-50 bg-gradient-to-br from-green-950/40 to-green-700/40 shadow-[0_0_15px_rgba(34,197,94,0.8)] hover:shadow-[0_0_25px_rgba(34,197,94,1)] backdrop-blur-sm backdrop-filter transition duration-300 ease-out hover:scale-105 hover:bg-green-950 md:h-[50px] ${pressStart2P.className}`}
+                className={`flex justify-center items-center font-lg font-bold h-full w-full text-center text-white text-xl transform cursor-pointer overflow-hidden rounded-xl bg-opacity-50 bg-gradient-to-br from-green-950/40 to-green-700/40 shadow-[0_0_15px_rgba(34,197,94,0.8)] hover:shadow-[0_0_25px_rgba(34,197,94,1)] backdrop-blur-sm backdrop-filter transition duration-300 ease-out hover:scale-105 hover:bg-green-950 md:h-[50px] ${pixelifySans.className}`}
               >
                 Register Now!
               </Link>
             </div>
           </div>
           <div className="flex w-full items-center justify-center md:w-1/2">
-            <div className="b relative mx-auto flex h-10 w-64 items-center justify-center md:h-[50px]">
+            <div className={`b relative mx-auto flex h-10 w-64 items-center justify-center md:h-[50px] text-xl ${pixelifySans.className}`}>
               <a
                 href="http://discord.gg/yKcMYeMMe8"
                 target='_blank'
-                className="flex justify-center items-center font-md  w-full h-full text-center font-pixelate text-white transform cursor-pointer rounded-xl border-2 border-green-700 bg-transparent shadow-md shadow-green-700 transition duration-300 ease-out hover:scale-105 hover:bg-green-950 md:h-[50px]"
+                className="flex justify-center items-center font-md  w-full h-full text-center text-white transform cursor-pointer rounded-xl border-2 border-green-700 bg-transparent shadow-md shadow-green-700 transition duration-300 ease-out hover:scale-105 hover:bg-green-950 md:h-[50px]"
               >
                 <span className="mr-4">
                   <svg

@@ -283,11 +283,11 @@ const Timeline = () => {
 
   return (
     <PageSection id="timeline justify-center">
-      <div className="mb-10 " ref={containerRef}>
-          <div>
-             <ArcadeHeader text="Timeline" />
+      <div className="my-2 mb-8 md:text-[3rem]">
+            <ArcadeHeader text="Timeline" />
           </div>
-        <div className="">
+      <div className="mb-16" ref={containerRef}>
+        <div className="border-2 border-[#222] rounded-[2rem] shadow-[0_0_30px_rgba(34,197,94,0.4)] bg-black overflow-hidden relative scale-85 origin-top">
           {/* Desktop View */}
           <div className="main-bar relative w-full h-[999px] z-20 hidden lg:block">
             {/* Background SVG */}

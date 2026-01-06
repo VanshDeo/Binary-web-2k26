@@ -54,13 +54,13 @@ export default function Home() {
         ) : (
           <>
             <Navbar />
-            <ScrollFlipCard />
-            {/* <Hero heroTopRef={heroTopRef}/> */}
+            {/* <ScrollFlipCard /> */}
+            <Hero heroTopRef={heroTopRef}/>
               <AboutSection />
+              <Timeline />
             <Tracks />
-            <Mentors />
-            <Timeline />
             <Gallary />
+            <Mentors />
             <Sponsors />
             <CommunityPartners />
             <FAQs />

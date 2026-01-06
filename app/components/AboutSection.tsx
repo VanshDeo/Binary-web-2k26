@@ -12,6 +12,12 @@ import ParticleImage, {
   ParticleForce,
 } from 'react-particle-image';
 import ArcadeHeader from './ui/ArcadeHeader';
+import { Pixelify_Sans } from "next/font/google";
+
+const pixelifySans = Pixelify_Sans({
+  variable: "--font-pixelify",
+  subsets: ["latin"],
+});
 
 const particleOptions: ParticleOptions = {
   filter: ({ x, y, image }) => {
@@ -67,19 +73,19 @@ const About = () => {
             <ArcadeHeader text="About Binary" />
           </div>
           <div className="grid w-full grid-cols-1 gap-16 md:grid-cols-8">
-            <div className="order-2 flex flex-col items-start justify-start md:order-1 md:col-span-5">
-              <h2 className="mb-4 font-pixelate text-xl font-bold uppercase text-green-400">
+            <div className={`order-2 flex flex-col items-start justify-start md:order-1 md:col-span-5 ${pixelifySans.className}`}>
+              <h2 className="mb-4 font-bold text-3xl uppercase text-green-400">
                 {' '}
                 hi everyone
               </h2>
-              <p className="font-pixelate font-bold text-white">
+              <p className="text-xl font-bold text-white">
                 {/* about binary content */}
                 Binary is the annual hackathon of Kalyani Government Engineering College. It aims to
                 be a stage for college students to showcase their creativity and resolve societal
                 issues using technology. We hope to employ the current generation of innovators to
                 think out of the box and bring transformative solutions to the forefront.
               </p>
-              <p className="my-5 mb-4 font-pixelate font-bold text-green-400">
+              <p className="my-5 mb-4 text-xl font-bold text-green-400">
                 {/* about content */}
                 We intend to host about 300 students with expertise in diverse domains of computer
                 science. The BINARY will take place in March at Kalyani Government Engineering

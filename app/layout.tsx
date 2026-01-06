@@ -31,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} bg-black`}>
+        <div className="scanline" />
         {children}
       </body>
     </html>

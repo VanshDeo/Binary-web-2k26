@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { Marquee } from "./magicui/marquee";
+import ArcadeHeader from './ui/ArcadeHeader';
 
 const teamMembers = [
     {
@@ -256,9 +257,9 @@ const Mentors = () => {
             <div className="relative mx-auto max-w-7xl px-4">
                 {/* Header */}
                 <div className="mx-auto max-w-2xl text-center">
-                    <h2 className="text-4xl font-bold font-mono text-center text-green-500 mb-16 tracking-tight">
-                        &lt;Mentors /&gt;
-                    </h2>
+                    <div className="mb-16">
+                        <ArcadeHeader text="Mentors" />
+                    </div>
 
                     <p className="text-lg text-white/60 leading-relaxed max-w-xl mx-auto mb-12">
                         Our diverse team of innovators, creators, and problem-solvers working together to shape the future of AI technology.

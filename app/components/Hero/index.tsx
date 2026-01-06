@@ -1,13 +1,17 @@
 import { memo } from 'react';
 import PageSection from '../../hooks/PageSection';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 // import { useMemo } from 'react';
 // import { useMediaQuery } from '../../hooks/useMediaQuery';
 import Clock from './Clock';
 
+import { Press_Start_2P } from 'next/font/google';
+
 // import cicada from '@public/images/cicada_trasparent.png';
 import Link from 'next/link';
+
+const pressStart2P = Press_Start_2P({ weight: '400', subsets: ['latin'] });
 
 const Hero = ({ heroTopRef }: { heroTopRef: (node?: Element | null | undefined) => void }) => {
   // const isMobile = useMediaQuery("(max-width: 767px)")
@@ -34,34 +38,20 @@ const Hero = ({ heroTopRef }: { heroTopRef: (node?: Element | null | undefined) 
       </a> */}
       <div id="hero" ref={heroTopRef} className="flex flex-col justify-center gap-8">
         <div className="mt-16 flex w-full flex-col items-center justify-center md:mt-0 md:text-[1.5rem]">
-          <motion.div
-            key="hero-logo"
-            className="mt-[15%] flex w-full flex-col items-center justify-center lg:mt-[10%]"
-            initial={{ opacity: 1, scale: 0 }}
-            animate={{ opacity: 1, scale: 0.8 }}
-            transition={{
-              duration: 0.3,
-              ease: [0, 0.71, 0.2, 1.01],
-              scale: {
-                type: 'spring',
-                damping: 5,
-                stiffness: 100,
-                restDelta: 0.001,
-              },
-            }}
-          >
+          <div className="mt-[15%] flex w-full flex-col items-center justify-center lg:mt-[10%]">
             <Image height={800} width={500} className="glitch opacity-[200]" src='/herologo.png' alt="Binary Hackathon" />
-          </motion.div>
+          </div>
         </div>
 
         <div className="mx-auto mt-16 flex flex-col gap-8 md:mt-0 md:flex-row">
           <div className="mt-4 flex w-full items-center justify-center md:mt-0 md:w-1/2">
             <div className="b mx-auto flex h-10 w-64 animate-bounce items-center justify-center md:h-[50px] md:animate-none">
               <Link
-                href="/projects2k25"
-                className="flex justify-center items-center font-lg font-bold h-full w-full text-center font-pixelate text-white transform cursor-pointer overflow-hidden rounded-xl bg-opacity-50 bg-gradient-to-br from-green-950/40 to-green-700/40 shadow-md shadow-green-700 backdrop-blur-sm backdrop-filter transition duration-300 ease-out hover:scale-105 hover:bg-green-950 md:h-[50px]"
+                href="https://binaryvtwo.devfolio.co/"
+                target="_blank"
+                className={`flex justify-center items-center font-lg font-bold h-full w-full text-center font-pixelate text-white transform cursor-pointer overflow-hidden rounded-xl bg-opacity-50 bg-gradient-to-br from-green-950/40 to-green-700/40 shadow-[0_0_15px_rgba(34,197,94,0.8)] hover:shadow-[0_0_25px_rgba(34,197,94,1)] backdrop-blur-sm backdrop-filter transition duration-300 ease-out hover:scale-105 hover:bg-green-950 md:h-[50px] ${pressStart2P.className}`}
               >
-                2k25 Projects
+                Register Now!
               </Link>
             </div>
           </div>

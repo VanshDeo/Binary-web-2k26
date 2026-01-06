@@ -88,7 +88,7 @@ export default function ScrollFlipCard() {
       }
 
       // Inverse Scale Logic for Hero
-      const inverseScale = scale !== 0 ? 1 / scale : 1;
+      const inverseScale = scale !== 0 ? scale/16 : 1;
 
       // Rotation & Radius
       const rotateY = flipProgress * 180;
@@ -132,10 +132,10 @@ export default function ScrollFlipCard() {
     animate();
 
     return () => cancelAnimationFrame(rafId);
-  }, []); 
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    
+
     const p = smoothProgress.current;
     const HOLD_END = 0.5;
     const flipProgress = clamp((p - HOLD_END) / (1 - HOLD_END), 0, 1);
@@ -171,6 +171,7 @@ export default function ScrollFlipCard() {
               // Initial styles to prevent FOUC
               transform: 'scale(1)',
               borderRadius: '32px',
+              willChange: "transform",
             }}
             className="relative w-screen h-screen overflow-hidden
            transition-transform duration-100 ease-out
@@ -213,6 +214,7 @@ export default function ScrollFlipCard() {
                 style={{
                   width: "100%",
                   height: "100%",
+                  willChange: "transform",
                 }}
                 className="origin-center"
               >

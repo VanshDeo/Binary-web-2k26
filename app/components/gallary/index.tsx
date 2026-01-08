@@ -77,35 +77,46 @@ export default function ScrollGallery() {
 
   return (
     <main className={styles.main}>
-   
+
       <div className="text-5xl p-4 mb-10 non-italic font-bold pt-10 text-[#F7931E] text-center">GALLERY</div>
       <div
         ref={gallery}
-        className={`${styles.gallery} grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 grid-rows-1`}
+        className={styles.gallery}
       >
-        <Column
-          images={[images[0], images[1], images[2]]}
-          y={y as unknown as number}
-        />
-        <Column
-          images={[images[3], images[4], images[5]]}
-          y={y2 as unknown as number}
-        />
-        {isMediumScreen ? (
+        {/* Mobile: Single Column with all images */}
+        {isSmallScreen ? (
           <Column
-            images={[images[6], images[7], images[8]]}
-            y={y3 as unknown as number}
+            images={images}
+            y={0}
           />
-        ) : isSmallScreen ? null : (
+        ) : (
+          /* Desktop: Multi-column parallax layout */
           <>
             <Column
-              images={[images[6], images[7], images[8]]}
-              y={y3 as unknown as number}
+              images={[images[0], images[1], images[2]]}
+              y={y as unknown as number}
             />
             <Column
-              images={[images[9], images[10], images[11]]}
-              y={y4 as unknown as number}
+              images={[images[3], images[4], images[5]]}
+              y={y2 as unknown as number}
             />
+            {isMediumScreen ? (
+              <Column
+                images={[images[6], images[7], images[8]]}
+                y={y3 as unknown as number}
+              />
+            ) : (
+              <>
+                <Column
+                  images={[images[6], images[7], images[8]]}
+                  y={y3 as unknown as number}
+                />
+                <Column
+                  images={[images[9], images[10], images[11]]}
+                  y={y4 as unknown as number}
+                />
+              </>
+            )}
           </>
         )}
       </div>

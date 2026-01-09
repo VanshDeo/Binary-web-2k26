@@ -43,7 +43,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="min-h-screen text-white relative">
+      <div className="min-h-screen text-white relative overflow-x-hidden">
         <PixelTransition isActive={transitionActive} />
 
         {isLoading ? (

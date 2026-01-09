@@ -71,6 +71,8 @@ const SpaceInvadersLoading: React.FC<SpaceInvadersLoadingProps> = ({ onLoadingCo
     const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
     const gameRef = useRef<{ cleanup: () => void } | null>(null);
     const skipLoadingRef = useRef<(() => void) | null>(null);
+    const gameModeRef = useRef<'auto' | 'manual'>('auto');
+    const keysRef = useRef<{ [key: string]: boolean }>({});
 
     useEffect(() => {
         const updateDimensions = () => {
@@ -217,13 +219,17 @@ const SpaceInvadersLoading: React.FC<SpaceInvadersLoadingProps> = ({ onLoadingCo
 
             const shootInterval = setInterval(() => {
                 if (!bossDefeated && !spawning && holdTimer >= 60) {
-                    bullets.push({
-                        x: player.x + player.width / 2 - 2,
-                        y: player.y,
-                        width: 4,
-                        height: 12,
-                        speed: 6 * speedMultiplier
-                    });
+                    // Auto-fire in auto mode, or if Space is held in manual mode (or just auto-fire always for arcade feel)
+                    // For arcade feel, let's keep auto-fire always on to make it easier, or check keysRef for Space
+                    if (gameModeRef.current === 'auto' || keysRef.current[' '] || true) { // Defaulting to auto-fire for now as per "manual play" request usually implies movement, but let's stick to simple
+                        bullets.push({
+                            x: player.x + player.width / 2 - 2,
+                            y: player.y,
+                            width: 4,
+                            height: 12,
+                            speed: 6 * speedMultiplier
+                        });
+                    }
                 }
             }, 200);
 
@@ -273,25 +279,38 @@ const SpaceInvadersLoading: React.FC<SpaceInvadersLoadingProps> = ({ onLoadingCo
 
 
 
-            const updateAI = () => {
+            // Event Listeners for Manual Control
+            const keyDown = (e: KeyboardEvent) => { keysRef.current[e.key] = true; };
+            const keyUp = (e: KeyboardEvent) => { keysRef.current[e.key] = false; };
+            window.addEventListener('keydown', keyDown);
+            window.addEventListener('keyup', keyUp);
+
+            const updatePlayerControl = () => {
                 if (bossDefeated) {
                     player.dx = 0;
                     return;
                 }
 
-                const targetX = boss.x + boss.width / 2 - player.width / 2;
-                if (Math.abs(player.x - targetX) > 5) {
-                    player.dx = player.x < targetX ? player.speed : -player.speed;
-                } else {
-                    player.dx = 0;
-                }
-
-                for (let eb of enemyBullets) {
-                    if (eb.y > player.y - 80 &&
-                        eb.x > player.x - 20 &&
-                        eb.x < player.x + player.width + 20) {
-                        player.dx = eb.x < player.x ? player.speed : -player.speed;
+                if (gameModeRef.current === 'auto') {
+                    const targetX = boss.x + boss.width / 2 - player.width / 2;
+                    if (Math.abs(player.x - targetX) > 5) {
+                        player.dx = player.x < targetX ? player.speed : -player.speed;
+                    } else {
+                        player.dx = 0;
                     }
+
+                    for (let eb of enemyBullets) {
+                        if (eb.y > player.y - 80 &&
+                            eb.x > player.x - 20 &&
+                            eb.x < player.x + player.width + 20) {
+                            player.dx = eb.x < player.x ? player.speed : -player.speed;
+                        }
+                    }
+                } else {
+                    // Manual Control
+                    if (keysRef.current['ArrowLeft'] || keysRef.current['a']) player.dx = -player.speed;
+                    else if (keysRef.current['ArrowRight'] || keysRef.current['d']) player.dx = player.speed;
+                    else player.dx = 0;
                 }
             };
 
@@ -341,7 +360,7 @@ const SpaceInvadersLoading: React.FC<SpaceInvadersLoadingProps> = ({ onLoadingCo
                     return;
                 }
 
-                updateAI();
+                updatePlayerControl();
 
                 player.x += player.dx;
                 player.x = Math.max(marginX, Math.min(canvas.width - player.width - marginX, player.x));
@@ -699,6 +718,8 @@ const SpaceInvadersLoading: React.FC<SpaceInvadersLoadingProps> = ({ onLoadingCo
             const skip = () => {
                 cancelAnimationFrame(animationId);
                 clearInterval(shootInterval);
+                window.removeEventListener('keydown', keyDown);
+                window.removeEventListener('keyup', keyUp);
                 onTransitionChange(true);
                 setTimeout(() => {
                     if (onLoadingComplete) onLoadingComplete();
@@ -713,6 +734,8 @@ const SpaceInvadersLoading: React.FC<SpaceInvadersLoadingProps> = ({ onLoadingCo
             currentCleanup = () => {
                 cancelAnimationFrame(animationId);
                 clearInterval(shootInterval);
+                window.removeEventListener('keydown', keyDown);
+                window.removeEventListener('keyup', keyUp);
             };
         };
 
@@ -909,12 +932,26 @@ const SpaceInvadersLoading: React.FC<SpaceInvadersLoadingProps> = ({ onLoadingCo
             />
 
             {isLoading && (
-                <button
-                    onClick={() => skipLoadingRef.current?.()}
-                    className="absolute bottom-4 right-4 sm:bottom-10 sm:right-10 z-[110] px-4 py-2 sm:px-6 sm:py-2 border-2 border-green-500 rounded-lg text-green-500 text-[8px] sm:text-[10px] font-press-start hover:bg-green-500 hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,197,94,0.4)] active:scale-95"
-                >
-                    SKIP
-                </button>
+                <div className="absolute bottom-4 right-4 sm:bottom-10 sm:right-10 z-[110] flex gap-2 sm:gap-4">
+                    <button
+                        onClick={() => gameModeRef.current = 'manual'}
+                        className="hidden sm:block px-4 py-2 sm:px-6 sm:py-2 border-2 border-green-500 rounded-lg text-green-500 text-[10px] font-press-start hover:bg-green-500 hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,197,94,0.4)] active:scale-95"
+                    >
+                        PLAY
+                    </button>
+                    <button
+                        onClick={() => gameModeRef.current = 'auto'}
+                        className="hidden sm:block px-4 py-2 sm:px-6 sm:py-2 border-2 border-green-500 rounded-lg text-green-500 text-[10px] font-press-start hover:bg-green-500 hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,197,94,0.4)] active:scale-95"
+                    >
+                        AUTO
+                    </button>
+                    <button
+                        onClick={() => skipLoadingRef.current?.()}
+                        className="px-4 py-2 sm:px-6 sm:py-2 border-2 border-green-500 rounded-lg text-green-500 text-[8px] sm:text-[10px] font-press-start hover:bg-green-500 hover:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,197,94,0.4)] active:scale-95"
+                    >
+                        SKIP
+                    </button>
+                </div>
             )}
 
             {showYouWon && (

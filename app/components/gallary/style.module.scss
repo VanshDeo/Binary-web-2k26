@@ -1,0 +1,87 @@
+.gallery {
+    height: 175vh;
+    background: rgb(45, 45, 45);
+    position: relative;
+    display: flex;
+    gap: 0.5vw;
+    padding: 2vw;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    // Mobile: Single column centered layout with small frames
+    @media (max-width: 622px) {
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        min-height: 100vh;
+    }
+
+    .column {
+        position: relative;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 2vw;
+
+        // Mobile: Single column with small frames
+        @media (max-width: 622px) {
+            width: 100%;
+            max-width: 500px;
+            height: auto;
+            gap: 1.5vw;
+            position: static;
+        }
+
+        .imageContainer {
+            height: 100%;
+            width: 100%;
+            position: relative;
+            border-radius: 1vw;
+            overflow: hidden;
+
+            // Mobile: Small fixed height frames with cover
+            @media (max-width: 622px) {
+                height: 250px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+                &:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+                }
+            }
+
+            img {
+                object-fit: cover;
+            }
+        }
+
+        // Desktop: Parallax positioning (hidden on mobile)
+        @media (min-width: 623px) {
+            &:nth-of-type(1) {
+                top: -45%;
+            }
+
+            &:nth-of-type(2) {
+                top: -95%;
+            }
+
+            &:nth-of-type(3) {
+                top: -45%;
+            }
+
+            &:nth-of-type(4) {
+                top: -75%;
+            }
+        }
+    }
+}
+
+.spacer {
+    height: 20vh;
+
+    @media (max-width: 622px) {
+        height: 5vh;
+    }
+}

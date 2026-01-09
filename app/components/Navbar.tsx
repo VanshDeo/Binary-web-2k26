@@ -8,17 +8,17 @@ import { HyperText } from './ui/hyper-text';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('');
-    const [progressWidth, setProgressWidth] = useState(0);
-    const navRefs = useRef<(HTMLAnchorElement | null)[]>([]);
+
 
     const navItems = [
         { name: 'About', href: '#about' },
         { name: 'Timeline', href: '#timeline' },
         { name: 'Tracks', href: '#tracks' },
-        { name: 'Prizes', href: '#prizes' },
         { name: 'Gallery', href: '#gallery' },
         { name: 'Mentors', href: '#mentors' },
         { name: 'Sponsors', href: '#sponsors' },
+        { name: 'Community', href: '#community-partners' },
+        { name: 'FAQs', href: '#faqs' },
     ];
 
     const [activeIndex, setActiveIndex] = useState(-1);
@@ -45,16 +45,23 @@ const Navbar = () => {
                 return;
             }
 
-            const sections = document.querySelectorAll('section[id]');
-            const scrollValues = Array.from(sections).map(section => ({
-                id: `#${section.id}`,
-                offset: Math.abs(section.getBoundingClientRect().top - 100)
-            }));
+            const entries = navItems.map(item => {
+                const el = document.querySelector(item.href);
+                if (el) {
+                    return {
+                        id: item.href,
+                        offset: Math.abs(el.getBoundingClientRect().top - 100)
+                    };
+                }
+                return null;
+            }).filter((item): item is { id: string, offset: number } => item !== null);
+
+            if (entries.length === 0) return;
 
             // Find section closest to top (100px offset)
-            const closest = scrollValues.reduce((prev, curr) => {
+            const closest = entries.reduce((prev, curr) => {
                 return (prev.offset < curr.offset) ? prev : curr;
-            }, { id: '', offset: Infinity });
+            });
 
             if (closest.offset < window.innerHeight / 2) { // Only highlight if reasonably close/visible
                 setActiveSection(closest.id);
@@ -70,27 +77,29 @@ const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    useEffect(() => {
-        // Calculate width: simply find the active element and get its position
-        if (activeIndex >= navItems.length) {
-            setProgressWidth(window.innerWidth);
-        } else if (activeIndex !== -1 && navRefs.current[activeIndex]) {
-            const el = navRefs.current[activeIndex];
-            if (el) {
-                setProgressWidth(el.getBoundingClientRect().right);
+    const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+        e.preventDefault();
+        setIsOpen(false);
+        const target = document.querySelector(href);
+        if (target) {
+            if (window.lenis) {
+                window.lenis.scrollTo(target as HTMLElement);
+            } else {
+                target.scrollIntoView({ behavior: 'smooth' });
             }
-        } else {
-            setProgressWidth(0);
         }
-    }, [activeIndex, activeSection]);
+    };
+
+
 
     return (
         <nav className="fixed top-0 left-0 w-full z-50 bg-black/80 backdrop-blur-md border-b border-green-500/20 overflow-hidden">
             {/* Desktop Scroll Progress Overlay */}
+            {/* Desktop Scroll Progress Overlay */}
             <motion.div
                 className="hidden md:block absolute inset-y-0 left-0 bg-white/10 z-0 h-full"
-                animate={{ width: progressWidth }}
-                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                animate={{ width: `${scrollProgress}%` }}
+                transition={{ ease: "linear", duration: 0.1 }}
             />
             {/* Mobile Scroll Progress Overlay */}
             <motion.div
@@ -128,12 +137,12 @@ const Navbar = () => {
                             {navItems.map((item, index) => (
                                 <a
                                     key={item.name}
-                                    ref={el => { navRefs.current[index] = el; }}
                                     href={item.href}
+                                    onClick={(e) => handleNavClick(e, item.href)}
                                     className={`px-3 py-2 rounded-md text-sm font-mono transition-all duration-300 flex items-center ${activeSection === item.href
                                         ? "text-green-500"
                                         : "text-gray-300 hover:text-green-400"
-                                        } ${index <= activeIndex ? 'opacity-100 blur-none' : 'opacity-0 blur-sm pointer-events-none'}`}
+                                        }`}
                                 >
                                     {activeSection === item.href && (
                                         <span className="w-2 h-2  bg-green-500 mr-2 animate-pulse" />
@@ -170,7 +179,7 @@ const Navbar = () => {
                                     ? "text-green-500"
                                     : "text-gray-300 hover:text-green-400"
                                     }`}
-                                onClick={() => setIsOpen(false)}
+                                onClick={(e) => handleNavClick(e, item.href)}
                             >
                                 {activeSection === item.href && (
                                     <span className="w-2 h-2 rounded-full bg-green-500 mr-2" />

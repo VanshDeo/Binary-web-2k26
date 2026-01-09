@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Press_Start_2P, Pixelify_Sans } from "next/font/google";
 import "./globals.css";
+import SmoothScroll from "./components/SmoothScroll";
 
 const pixelify = Pixelify_Sans({
   variable: "--pixelify-sans",
@@ -40,7 +41,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} ${pressStart2P.variable} ${pixelify.variable} bg-black overflow-hidden`}>
         <div className="relative z-10 w-full h-full">
           <div className={`scanline`} />
-          {children}
+          <SmoothScroll>{children}</SmoothScroll>
         </div>
       </body>
     </html>

@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'SF_Pixelate';
+  src: url('/fonts/SFPixelate.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SF_Pixelate';
+  src: url('/fonts/SFPixelate-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 :root {
   --background: #000000;
   --foreground: #171717;
@@ -11,6 +25,7 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-press-start: var(--font-press-start-2p);
+  --font-sf-pixelate: 'SF_Pixelate';
 
   @keyframes glitch {
     0% {
@@ -149,4 +164,36 @@ html {
 
 div {
   font-family: var(--pixelify-sans), monospace;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-100% - var(--gap)));
+  }
+}
+
+@keyframes marquee-vertical {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(calc(-100% - var(--gap)));
+  }
+}
+
+.animate-marquee {
+  animation: marquee var(--duration) linear infinite;
+}
+
+.animate-marquee-vertical {
+  animation: marquee-vertical var(--duration) linear infinite;
+}
+
+.animate-marquee-vertical-reverse {
+  animation: marquee-vertical var(--duration) linear infinite reverse;
 }

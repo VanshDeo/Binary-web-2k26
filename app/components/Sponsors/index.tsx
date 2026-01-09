@@ -17,7 +17,7 @@ interface Sponsor {
 const Sponsors = () => {
   return (
     // <PageSection>
-    <div id="sponsors" className="flex flex-col font-pixelate text-white mt-28">
+    <section id="sponsors" className="flex flex-col font-pixelate text-white mt-28">
       <div>
         <div className="mb-1">
           <ArcadeHeader text="Sponsors" />
@@ -149,7 +149,7 @@ const Sponsors = () => {
           );
         })}
       </div>
-    </div>
+    </section>
     // </PageSection>
   );
 };

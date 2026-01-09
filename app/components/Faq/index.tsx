@@ -14,8 +14,8 @@ const FAQs = () => {
   );
 
   return (
-    <PageSection>
-      <div id="faqs" className="mb-20 text-white sm:mb-20">
+    <PageSection id="faqs">
+      <div className="mb-20 text-white sm:mb-20">
         <div>
           <div className="mt-[96px] md:mt-[116px]">
             <ArcadeHeader text="Have a question?" />

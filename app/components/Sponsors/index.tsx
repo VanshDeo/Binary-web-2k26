@@ -7,6 +7,7 @@ import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
 // import useTextScramble from "../Animations/text";
 import { sponsors } from "@/app/constants/sponsors";
+import ComingSoon from "../ComingSoon/ComingSoon";
 interface Sponsor {
   logo: string | StaticImageData;
   link?: string;
@@ -22,6 +23,8 @@ const Sponsors = () => {
         <div className="mb-1">
           <ArcadeHeader text="Sponsors" />
         </div>
+        
+        <ComingSoon />
 
         {/* {sponsors.map((sponsorItem) => {
           console.log(sponsorItem, 'dfkn');
@@ -110,13 +113,15 @@ const Sponsors = () => {
             gridClass += " grid-cols-1";
             imageSizeClass = "w-16 sm:w-20 h-24 object-contain baler-website";
           }
+          
 
           return (
             <div
               className="mb-0 flex flex-col items-center justify-center"
               key={sponsorItem.title}
             >
-              <div className={gridClass}>
+
+              {/* <div className={gridClass}>
                 {sponsorItem.sponsors.length === 0 ? (
                   <div className="text-center">Coming Soon...</div>
                 ) : (
@@ -144,8 +149,9 @@ const Sponsors = () => {
                     )
                   )
                 )}
-              </div>
+              </div> */}
             </div>
+            
           );
         })}
       </div>

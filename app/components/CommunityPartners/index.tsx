@@ -18,6 +18,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
+import ComingSoon from "../ComingSoon/ComingSoon";
 
 interface MemberComponentProps {
   url: string;
@@ -70,8 +71,9 @@ const CommunityPartners = () => {
         <div className="mt-[36px] md:mt-[64px]">
           <ArcadeHeader text="Community Partners" />
         </div>
+        <ComingSoon />
 
-        {isMobile ? (
+        {/* {isMobile ? (
           <div className="mx-auto mt-20 md:mt-10">
             <Swiper
               modules={[Autoplay]}
@@ -148,7 +150,7 @@ const CommunityPartners = () => {
               }
             })}
           </div>
-        )}
+        )} */}
       </Section>
     </PageSection>
   );

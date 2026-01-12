@@ -55,7 +55,7 @@ const Tracks = () => {
     ];
 
     return (
-        <section id="tracks" className="py-20 bg-black text-white relative">
+        <section id="tracks" className="py-20 text-white relative">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-2">
                     <ArcadeHeader text="Tracks" />
@@ -70,7 +70,7 @@ const Tracks = () => {
                                     <div className="mb-4 transform transition-transform duration-300 group-hover:scale-110">
                                         {track.icon}
                                     </div>
-                                    <h3 className="text-2xl font-bold font-mono text-gray-100">{track.title}</h3>
+                                    <h3 className="text-2xl font-bold text-gray-100">{track.title}</h3>
                                 </div>
                             }
                             secondContent={
@@ -84,7 +84,7 @@ const Tracks = () => {
                                         padding: "1rem"
                                     }}
                                 >
-                                    <p className="text-center font-mono font-bold text-xl" style={{ color: track.color }}>
+                                    <p className="text-center font-bold text-xl" style={{ color: track.color }}>
                                         {track.description}
                                     </p>
                                 </div>

@@ -2,7 +2,7 @@
 import { Key, useEffect, useRef, useState } from "react";
 import styles from "./style.module.scss";
 import Image from "next/image";
-import Lenis from "@studio-freight/lenis";
+import ArcadeHeader from "../ui/ArcadeHeader";
 import { useTransform, useScroll, motion } from "framer-motion";
 import useScreenSize from "@/app/hooks/WidthDetect";
 
@@ -54,20 +54,14 @@ export default function ScrollGallery() {
 
   const { isSmallScreen, isMediumScreen } = useScreenSize();
 
+
+
   useEffect(() => {
-    const lenis = new Lenis();
-
-    const raf = (time: number) => {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    };
-
     const resize = () => {
       setDimension({ width: window.innerWidth, height: window.innerHeight });
     };
 
     window.addEventListener("resize", resize);
-    requestAnimationFrame(raf);
     resize();
 
     return () => {
@@ -76,9 +70,10 @@ export default function ScrollGallery() {
   }, []);
 
   return (
-    <main className={styles.main}>
-
-      <div className="text-5xl p-4 mb-10 non-italic font-bold pt-10 text-[#F7931E] text-center">GALLERY</div>
+    <section id="gallery" className={styles.main}>
+      <div className="mb-2">
+        <ArcadeHeader text="Gallery" />
+      </div>
       <div
         ref={gallery}
         className={styles.gallery}
@@ -121,7 +116,7 @@ export default function ScrollGallery() {
         )}
       </div>
       <div className={styles.spacer}></div>
-    </main>
+    </section>
   );
 }
 

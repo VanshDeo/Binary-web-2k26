@@ -101,7 +101,7 @@ export default function ScrollFlipCard() {
       const inverseScale = scale !== 0 ? scale / 16 : 1;
 
       // Update scanline opacity globally
-      document.documentElement.style.setProperty('--scanline-opacity', scanlineOpacity.toString());
+      // document.documentElement.style.setProperty('--scanline-opacity', scanlineOpacity.toString());
 
       /* ---------------- DOM UPDATES ---------------- */
 
@@ -159,7 +159,7 @@ export default function ScrollFlipCard() {
   return (
     <section ref={sectionRef} className="relative h-[300vh] bg-black">
       <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-        <div className="perspective">
+        <div className="perspective" style={{ perspective: '1000px' }}>
           <div
             ref={cardRef}
             onMouseMove={handleMouseMove}
@@ -169,29 +169,34 @@ export default function ScrollFlipCard() {
               transform: 'scale(1)',
               borderRadius: '32px',
               willChange: "transform",
+              transformStyle: 'preserve-3d',
             }}
             className="relative w-screen h-screen overflow-hidden
-           transition-transform duration-100 ease-out
-           preserve-3d"
+           transition-transform duration-100 ease-out"
           >
             {/* ---------- FRONT FACE ---------- */}
             <div
               ref={frontFaceRef}
               className="absolute inset-0
-              flex items-center justify-center"
-              style={{ backfaceVisibility: 'hidden' }}
+              flex items-center justify-center
+              backface-hidden"
+              style={{
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                zIndex: 2
+              }}
             >
-              <div className="w-full h-full bg-green-600 p-6">
-                <div className="w-full h-full rounded-3xl overflow-hidden bg-green-500">
-                  {/* <img
-                    src="/character.png"
+              <div className="w-full h-full p-6 flex flex-col items-center justify-center bg-black">
+                <div className="w-[80vw] h-[80vh] max-w-4xl max-h-[800px] rounded-3xl overflow-hidden bg-green-900/20 border-4 border-green-500 flex flex-col items-center justify-center relative">
+                  <img
+                    src="/mascot.png"
                     alt="First Section"
-                    className="w-full h-full object-cover"
-                  /> */}
+                    className="w-full h-full object-contain p-8 drop-shadow-[0_0_15px_rgba(74,222,128,0.5)]"
+                  />
                   <h2
-                    className="text-4xl font-bold text-white"
+                    className="absolute bottom-8 text-4xl font-bold text-white drop-shadow-md font-press-start"
                   >
-                    First Section
+                    Enter the Grid
                   </h2>
                 </div>
               </div>
@@ -200,10 +205,15 @@ export default function ScrollFlipCard() {
             {/* ---------- BACK FACE ---------- */}
             <div
               ref={backFaceRef}
-              className="absolute inset-0 rotate-y-180
-             flex items-center justify-center
-             overflow-hidden"
-              style={{ backfaceVisibility: 'hidden' }}
+              className="absolute inset-0 
+              flex items-center justify-center
+              overflow-hidden"
+              style={{
+                transform: 'rotateY(180deg)',
+                backfaceVisibility: 'hidden',
+                WebkitBackfaceVisibility: 'hidden',
+                zIndex: 1
+              }}
             >
               {/* Neutralize parent scaling */}
               <div

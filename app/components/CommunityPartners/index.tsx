@@ -72,12 +72,12 @@ const CommunityPartners = () => {
       id="community-partners"
       className={isMobile ? `min-h-fit` : ""}
     >
-      <Section>
+      <Section className="flex flex-col min-h-[50vh]">
         <div className="mt-[36px] md:mt-[64px]">
           <ArcadeHeader text="Community Partners" />
         </div>
 
-        <div className="flex items-center justify-center mt-20">
+        <div className="flex flex-grow items-center justify-center">
           <p className={`text-4xl md:text-6xl font-bold text-white uppercase tracking-widest ${pixelifySans.className}`}>
             Coming Soon!
           </p>

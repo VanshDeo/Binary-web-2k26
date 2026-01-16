@@ -12,12 +12,8 @@ import ParticleImage, {
   ParticleForce,
 } from 'react-particle-image';
 import ArcadeHeader from './ui/ArcadeHeader';
-import { Pixelify_Sans } from "next/font/google";
+import { pixelifySans } from '@/app/utils/pixelifySans.utils';
 
-const pixelifySans = Pixelify_Sans({
-  variable: "--font-pixelify",
-  subsets: ["latin"],
-});
 
 const particleOptions: ParticleOptions = {
   filter: ({ x, y, image }) => {
@@ -67,8 +63,8 @@ const About = () => {
 
   return (
     <PageSection id="about">
-      <div className="mt-10">
-        <div className="my-2 mb-8 md:text-[3rem]">
+      <div className="mt-10 py-16">
+        <div className="mb-12 md:text-[3rem]">
           <ArcadeHeader text="About Binary" />
         </div>
         <div className="grid w-full grid-cols-1 gap-16 md:grid-cols-8">
@@ -116,7 +112,7 @@ const About = () => {
           </div>
         </div>
         <div className='flex flex-wrap items-center justify-center w-full gap-2 md:gap-4 text-3xl md:text-5xl'>
-          <p className='text-center w-full md:w-auto text-2xl md:text-3xl'>-Hosted by</p>
+          <p className='text-center w-full md:w-auto -ml-2 md:ml-4 text-2xl md:text-3xl'>-Hosted by</p>
           <p className='text-center'>Dev Community</p>
           <Image
             src='/images/dcLogo.png'

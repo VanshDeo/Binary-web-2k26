@@ -18,12 +18,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { Pixelify_Sans } from "next/font/google";
 
-const pixelifySans = Pixelify_Sans({
-  variable: "--font-pixelify",
-  subsets: ["latin"],
-});
+import { pixelifySans } from '@/app/utils/pixelifySans.utils';
 
 interface MemberComponentProps {
   url: string;
@@ -73,12 +69,12 @@ const CommunityPartners = () => {
       className={isMobile ? `min-h-fit` : ""}
     >
       <Section className="flex flex-col min-h-[50vh]">
-        <div className="mt-[36px] md:mt-[64px]">
+        <div className="mt-[36px] md:mt-[64px] mb-12">
           <ArcadeHeader text="Community Partners" />
         </div>
 
-        <div className="flex flex-grow mt-20 items-center justify-center">
-          <p className={`text-4xl md:text-6xl font-bold text-white uppercase tracking-widest ${pixelifySans.className}`}>
+        <div className="flex items-center justify-center min-h-20 md:min-h-50">
+          <p className={`text-4xl md:text-4xl font-bold text-white uppercase tracking-widest ${pixelifySans.className}`}>
             Coming Soon!
           </p>
         </div>

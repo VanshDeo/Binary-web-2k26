@@ -17,10 +17,10 @@ const FAQs = () => {
     <PageSection id="faqs">
       <div className="mb-20 text-white sm:mb-20">
         <div>
-          <div className="mt-[96px] md:mt-[116px]">
+          <div className="mt-[96px] md:mt-[116px] mb-12">
             <ArcadeHeader text="Have a question?" />
           </div>
-          <div className="mx-auto mt-8 min-w-full space-y-4 font-pixelate font-[1rem] md:mt-16 md:w-[calc(50vw)] md:font-[2rem]">
+          <div className="mx-auto min-w-full space-y-4 font-pixelate font-[1rem] md:w-[calc(50vw)] md:font-[2rem]">
             <ul className="mx-auto max-w-7xl divide-y-[0.1px] divide-[#393939] rounded-xl shadow-md">
               {faqItems.map((faq, index) => {
                 return (

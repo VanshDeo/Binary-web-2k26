@@ -294,14 +294,14 @@ const Timeline = () => {
   }, []);
 
   return (
-    <PageSection id="timeline">
-      <div className="my-3 mb-8 md:text-[3rem]">
+    <PageSection id="timeline" className="py-10">
+      <div className="mb-12 md:text-[3rem]">
         <ArcadeHeader text="Timeline" />
       </div>
       <div className="mb-0" ref={containerRef}>
-        <div className="border-2 border-[#222] rounded-4xl shadow-[0_0_30px_rgba(34,197,94,0.4)] bg-black overflow-hidden relative scale-85 origin-top">
+        <div className="border-2 border-[#222] rounded-4xl shadow-[0_0_30px_rgba(34,197,94,0.4)] bg-black overflow-hidden relative max-w-[85%] mx-auto">
           {/* Desktop View */}
-          <div className="main-bar relative w-full h-215 z-20 hidden lg:block">
+          <div className="main-bar relative w-full h-[650px] z-20 hidden lg:block">
             {/* Background SVG */}
             <div className="absolute top-0 left-0 w-full h-full z-0 overflow-x-hidden pointer-events-none select-none transform-gpu">
               <PacmanPathSVG
@@ -317,37 +317,37 @@ const Timeline = () => {
               {/* Left Side (Odd Items) */}
               <div className="left-side w-1/2 h-full flex flex-col gap-4 items-end pr-[10%]">
                 <MiddleTimelineBox
-                  className="first-timeline-box mb-10 mt-40"
+                  className="first-timeline-box mb-10 mt-32 scale-90 origin-right"
                   title="13th Febraury"
                   subtitle="Registration End"
                 />
                 <MiddleTimelineBox
-                  className="third-timeline-box mt-14"
+                  className="third-timeline-box mt-4 scale-90 origin-right"
                   title="7th March"
                   subtitle="Hackathon Starts"
                 />
                 <MiddleTimelineBox
-                  className="fifth-timeline-box mt-14"
+                  className="fifth-timeline-box mt-4 scale-90 origin-right"
                   title="8th March"
                   subtitle="Hackathon Ends"
-                  
+
                 />
               </div>
 
               {/* Right Side (Even Items) */}
               <div className="right-side w-1/2 h-full flex flex-col gap-4 items-start pl-[10%]">
                 <MiddleTimelineBox
-                  className="second-timeline-box mt-12"
+                  className="second-timeline-box mt-10 scale-90 origin-left"
                   title="6th January"
                   subtitle="Registration Start"
                 />
                 <MiddleTimelineBox
-                  className="fourth-timeline-box mt-24"
+                  className="fourth-timeline-box mt-16 scale-90 origin-left"
                   title="To be Announced"
                   subtitle="Approvals Roll out"
                 />
                 <MiddleTimelineBox
-                  className="sixth-timeline-box mt-28"
+                  className="sixth-timeline-box mt-20 scale-90 origin-left"
                   title="8th March"
                   subtitle="Submission of Projects"
                 />
@@ -356,7 +356,7 @@ const Timeline = () => {
           </div>
 
           {/* Tab View */}
-          <div className="tab-bar relative w-full h-400 z-20 hidden md:block lg:hidden">
+          <div className="tab-bar relative w-full h-full pb-10 z-20 hidden md:block lg:hidden">
             {/* Background SVG */}
             <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden pointer-events-none select-none transform-gpu">
               <PacmanPathSVG
@@ -373,58 +373,59 @@ const Timeline = () => {
               {/* Left Side */}
               <div className="left-side w-1/2 h-full flex flex-col mt-20 pl-[5%] gap-20 items-end pr-[2%] pointer-events-auto">
                 <MiddleTimelineBox
-                  className="first-timeline-box-tab mb-5 mt-28 transform scale-125 pl-[%] origin-right"
+                  className="first-timeline-box-tab mb-5 mt-28 origin-right"
                   title="6th January"
                   subtitle="Registration Starts"
                 />
                 <MiddleTimelineBox
-                  className="third-timeline-box-tab mt-60 transform scale-125 pl-[12%] origin-right"
+                  className="third-timeline-box-tab mt-60 origin-right"
                   title="To be Announced"
                   subtitle="Approvals Roll out"
                 />
                 <MiddleTimelineBox
-                  className="fifth-timeline-box-tab mt-80 transform scale-125 pl-[12%] origin-right"
+                  className="fifth-timeline-box-tab mt-80 origin-right"
                   title="8th March"
                   subtitle="Submission of Projects"
                 />
               </div>
 
               {/* Right Side */}
-              <div className="right-side w-1/2 h-full flex flex-col gap-4 items-start pl-[2%] pr-[5%] pointer-events-auto">
+              <div className="right-side w-3/5 h-full flex flex-col gap-4 items-start pl-[2%] pr-[5%] pointer-events-auto">
                 <MiddleTimelineBox
-                  className="second-timeline-box-tab mt-100 transform scale-125 origin-left"
+                  className="second-timeline-box-tab mt-100 origin-left"
                   title="13th February"
                   subtitle="Registration End"
                 />
                 <MiddleTimelineBox
-                  className="fourth-timeline-box-tab mt-100 transform scale-125 origin-left"
+                  className="fourth-timeline-box-tab mt-100 origin-left"
                   title="7th March"
                   subtitle="Hackathon Starts"
                 />
                 <MiddleTimelineBox
-                  className="sixth-timeline-box-tab mt-88 transform scale-125 origin-left"
+                  className="sixth-timeline-box-tab mt-88 origin-left"
                   title="8th March"
                   subtitle="Hackathon Ends"
                 />
               </div>
             </div>
           </div>
+
           {/*Mobile View*/}
-          <div className="mobile-timeline-container relative max-w-3xl h-190 md:hidden   justify-center ">
+          <div className="mobile-timeline-container relative max-w-3xl h-[110vh] md:hidden justify-center overflow-x-hidden">
             <PacmanPathMobileSVG
-              className_svg="mobile-svg absolute  md:hidden left-[10px] max-w-1/7 h-[1020px] transform scale-90 origin-top-left stroke-green-600"
-              className_path=" w-[100%]  flex flex-col items-center justify-center  h-[920px] stroke-green-600"
+              className_svg="mobile-svg absolute  md:hidden left-[-15px] max-w-1/7 h-full origin-top-left stroke-green-600"
+              className_path=" w-[100%]  flex flex-col items-center justify-center h-[110px] stroke-green-600"
               pathId="path-mobile"
               pacmanClass="pattern-rect-mobile"
             />
-            <div className="z-10 absolute  flex flex-col gap-5 justify-center w-full h-190 md:hidden font-sf-pixelate pt-5 pb-5">
+            <div className="z-10 absolute flex flex-col gap-5 justify-center w-full h-fit md:hidden font-sf-pixelate pt-5 pb-5">
               {timeline.map((item, index) => (
                 <div
                   key={index}
-                  className="relative left-15 w-[calc(100%-80px)]"
+                  className="relative left-12 w-[calc(100%-80px)]"
                 >
                   <MiddleTimelineBox
-                    className="w-full transform scale-90 origin-top-left mobile-timeline-box"
+                    className="w-full origin-top-left mobile-timeline-box"
                     title={item.date}
                     subtitle={item.title}
                   />

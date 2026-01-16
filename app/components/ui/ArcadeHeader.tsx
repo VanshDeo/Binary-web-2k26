@@ -8,7 +8,7 @@ interface ArcadeHeaderProps {
 
 const ArcadeHeader: React.FC<ArcadeHeaderProps> = ({ text, className }) => {
     return (
-        <div className={cn("w-full flex justify-center items-center py-8", className)}>
+        <div className={cn("w-full flex justify-center items-center py-4 md:py-8", className)}>
             <h2
                 className="
           font-press-start 

@@ -2,12 +2,10 @@
 import { useState } from 'react';
 import { Marquee } from "./magicui/marquee";
 import ArcadeHeader from './ui/ArcadeHeader';
-import { Pixelify_Sans } from "next/font/google";
+import PageSection from '../hooks/PageSection';
+import { useMediaQuery } from '../hooks/useMediaQuery';
 
-const pixelifySans = Pixelify_Sans({
-    variable: "--font-pixelify",
-    subsets: ["latin"],
-});
+import { pixelifySans } from '@/app/utils/pixelifySans.utils';
 
 const teamMembers = [
     {
@@ -106,7 +104,7 @@ const TeamMemberCard = ({ img, name, username, role, expertise, onClick, highlig
         relative overflow-hidden rounded-3xl border border-white/10 
         bg-gradient-to-b from-white/[0.08] via-white/[0.04] to-transparent
         ${gradientClass}
-        p-8 shadow-2xl backdrop-blur-xl
+        p-8 shadow-2xl
         transition-all duration-500 ease-out
         hover:border-green-500/50 hover:shadow-[0_20px_80px_-20px_rgba(34,197,94,0.3)]
         hover:scale-[1.02] hover:-translate-y-1
@@ -242,6 +240,8 @@ const PopupCard = ({ member, isOpen, onClose }: any) => {
 const Mentors = () => {
     const [selectedMember, setSelectedMember] = useState(null);
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const isMobile = useMediaQuery("(max-width: 767px)");
+
 
     const handleCardClick = (member: any) => {
         setSelectedMember(member);
@@ -254,32 +254,97 @@ const Mentors = () => {
     };
 
     return (
-        <section id="mentors" className="relative py-24 overflow-hidden bg-black text-white">
-            {/* Animated background */}
-            {/* Animated background removed */}
-            <div className="absolute inset-0 pointer-events-none">
-            </div>
-
-            {/* Header */}
-            <div className="mx-auto max-w-2xl text-center filter select-none pointer-events-none">
-                <div className="mb-11">
-                    <ArcadeHeader text="Mentors" />
+        <PageSection
+            id="mentors"
+            className={isMobile ? `min-h-fit` : ""}
+        >
+            <section className="relative  overflow-hidden bg-black text-white">
+                {/* Animated background */}
+                {/* Animated background removed */}
+                <div className="absolute inset-0 pointer-events-none">
                 </div>
-            </div>
 
-            <div className="flex items-center justify-center min-h-20 md:min-h-50">
-                <p className={`text-4xl md:text-6xl font-bold text-white uppercase tracking-widest ${pixelifySans.className}`}>
-                    Coming Soon!
-                </p>
-            </div>
+                {/* Header */}
+                <div className="mx-auto max-w-2xl text-center filter select-none pointer-events-none">
+                    <div className="mb-12">
+                        <ArcadeHeader text="Mentors" />
+                    </div>
+                </div>
 
-            {/* Popup Modal */}
-            <PopupCard
+                <div className="flex items-center justify-center min-h-20 md:min-h-50">
+                    <p className={`text-4xl md:text-4xl font-bold text-white uppercase tracking-widest ${pixelifySans.className}`}>
+                        Coming Soon!
+                    </p>
+                </div>
+
+                {/* Team marquee - Slower animations
+                {/* Desktop Layout - Vertical Columns */}
+                {/* <div className="mt-0 hidden md:flex justify-center gap-20 max-h-[800px] overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]">
+                    <div className="hidden lg:block">
+                        <Marquee pauseOnHover vertical className="[--duration:45s]">
+                            {firstColumn.map((member) => (
+                                <TeamMemberCard
+                                    key={member.name}
+                                    {...member}
+                                    highlightDirection="tr-bl"
+                                    onClick={() => handleCardClick(member)}
+                                />
+                            ))}
+                        </Marquee>
+                    </div>
+
+                    <div className="hidden md:block">
+                        <Marquee reverse pauseOnHover vertical className="[--duration:45s]">
+                            {secondColumn.map((member) => (
+                                <TeamMemberCard
+                                    key={member.name}
+                                    {...member}
+                                    highlightDirection="tl-br"
+                                    onClick={() => handleCardClick(member)}
+                                />
+                            ))}
+                        </Marquee>
+                    </div>
+
+                    <div>
+                        <Marquee pauseOnHover vertical className="[--duration:45s]">
+                            {thirdColumn.map((member) => (
+                                <TeamMemberCard
+                                    key={member.name}
+                                    {...member}
+                                    highlightDirection="tr-bl"
+                                    onClick={() => handleCardClick(member)}
+                                />
+                            ))}
+                        </Marquee>
+                    </div>
+                </div> */}
+
+                {/* Mobile Layout - Horizontal Marquee */}
+                {/* <div className="mt-10 md:hidden block overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
+                    <Marquee pauseOnHover className="[--duration:45s]">
+                        {teamMembers.map((member) => (
+                            <div key={member.name} className="px-4">
+                                <TeamMemberCard
+                                    {...member}
+                                    highlightDirection="tr-bl"
+                                    onClick={() => handleCardClick(member)}
+                                />
+                            </div>
+                        ))}
+                    </Marquee>
+                </div> 
+        </div> */}
+
+                {/* Popup Modal */}
+                {/* <PopupCard
                 member={selectedMember}
                 isOpen={isPopupOpen}
                 onClose={closePopup}
-            />
-        </section>
+            /> */}
+
+            </section >
+        </PageSection>
     );
 };
 

@@ -6,12 +6,9 @@ import BinaryText from "@/app/components/Animations/BinaryText";
 import ArcadeHeader from "../ui/ArcadeHeader";
 import Image, { StaticImageData } from "next/image";
 import Link from "next/link";
-import { Pixelify_Sans } from "next/font/google";
 
-const pixelifySans = Pixelify_Sans({
-  variable: "--font-pixelify",
-  subsets: ["latin"],
-});
+import { pixelifySans } from '@/app/utils/pixelifySans.utils';
+
 // import useTextScramble from "../Animations/text";
 import { sponsors } from "@/app/constants/sponsors";
 interface Sponsor {
@@ -31,8 +28,8 @@ const Sponsors = () => {
       className={isMobile ? `min-h-fit` : ""}
     >
       <section className="flex flex-col font-pixelate text-white mt-28 min-h-[50vh]">
-        <div className="flex flex-col h-full grow">
-          <div className="">
+        <div className="flex flex-col h-full">
+          <div className="mb-12">
             <ArcadeHeader text="Sponsors" />
           </div>
 
@@ -102,8 +99,8 @@ const Sponsors = () => {
           );
         })} */}
 
-          <div className="flex grow items-center justify-center">
-            <p className={`text-4xl md:text-6xl font-bold text-white uppercase tracking-widest ${pixelifySans.className}`}>
+          <div className="flex items-center justify-center min-h-20 md:min-h-50">
+            <p className={`text-4xl md:text-4xl font-bold text-white uppercase tracking-widest ${pixelifySans.className}`}>
               Coming Soon!
             </p>
           </div>

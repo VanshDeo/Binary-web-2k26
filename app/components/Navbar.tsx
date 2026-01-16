@@ -6,14 +6,9 @@ import NextImage from "next/image";
 import { motion } from "framer-motion";
 import { HyperText } from './ui/hyper-text';
 import { useRouter, usePathname } from 'next/navigation';
-import { Pixelify_Sans } from 'next/font/google';
 import { useGlitch } from 'react-powerglitch';
+import { pixelifySans } from '@/app/utils/pixelifySans.utils';
 
-const pixelifySans = Pixelify_Sans({
-    subsets: ['latin'],
-    weight: ['400', '700'],
-    variable: '--font-pixelify-sans',
-});
 
 // Component to handle individual nav items with glitch effect
 function NavItemWithGlitch({

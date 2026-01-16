@@ -7,14 +7,10 @@ import Image from 'next/image';
 // import { useMediaQuery } from '../../hooks/useMediaQuery';
 import Clock from './Clock';
 
-import { Pixelify_Sans } from "next/font/google";
 import SpaceInvadersGame from '../SpaceInvaders';
 import { Gamepad2 } from 'lucide-react';
 
-const pixelifySans = Pixelify_Sans({
-  variable: "--font-pixelify",
-  subsets: ["latin"],
-});
+import { pixelifySans } from '@/app/utils/pixelifySans.utils';
 
 // import cicada from '@public/images/cicada_trasparent.png';
 import Link from 'next/link';

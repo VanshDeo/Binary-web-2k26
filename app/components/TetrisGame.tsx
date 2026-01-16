@@ -2,7 +2,7 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { Pixelify_Sans, Geist_Mono } from "next/font/google";
-import { X, ChevronLeft } from 'lucide-react';
+import { X, ChevronLeft, ArrowLeft, ArrowRight, ArrowDown, RotateCw } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const pixelify = Pixelify_Sans({
@@ -32,13 +32,13 @@ const COLORS = [
 
 const PIECES = [
     [],
-    [[0, 1, 0], [1, 1, 1]], // T
+    [[0, 1, 0], [1, 1, 1], [0, 0, 0]], // T
     [[2, 2], [2, 2]],       // O
-    [[0, 3, 3], [3, 3, 0]], // S
-    [[4, 4, 0], [0, 4, 4]], // Z
-    [[0, 0, 5], [5, 5, 5]], // L
-    [[6, 0, 0], [6, 6, 6]], // J
-    [[0, 0, 0, 0], [7, 7, 7, 7], [0, 0, 0, 0]], // I
+    [[0, 3, 3], [3, 3, 0], [0, 0, 0]], // S
+    [[4, 4, 0], [0, 4, 4], [0, 0, 0]], // Z
+    [[0, 0, 5], [5, 5, 5], [0, 0, 0]], // L
+    [[6, 0, 0], [6, 6, 6], [0, 0, 0]], // J
+    [[0, 0, 0, 0], [7, 7, 7, 7], [0, 0, 0, 0], [0, 0, 0, 0]], // I
 ];
 
 const createMatrix = (w: number, h: number) => {
@@ -54,9 +54,10 @@ const collide = (arena: number[][], player: { matrix: number[][], pos: { x: numb
     const o = player.pos;
     for (let y = 0; y < m.length; ++y) {
         for (let x = 0; x < m[y].length; ++x) {
-            if (m[y][x] !== 0 &&
-                (arena[y + o.y] && arena[y + o.y][x + o.x]) !== 0) {
-                return true;
+            if (m[y][x] !== 0) {
+                if (!arena[y + o.y] || arena[y + o.y][x + o.x] === undefined || arena[y + o.y][x + o.x] !== 0) {
+                    return true;
+                }
             }
         }
     }
@@ -141,6 +142,7 @@ const TetrisGame = ({ onClose, onBack }: { onClose: () => void, onBack?: () => v
     const [level, setLevel] = useState(1);
     const [nextPieceType, setNextPieceType] = useState<number>(0);
     const [gameOver, setGameOver] = useState(false);
+    const [resetTrigger, setResetTrigger] = useState(0);
 
     const stateRef = useRef({
         grid: [] as number[][],
@@ -195,6 +197,11 @@ const TetrisGame = ({ onClose, onBack }: { onClose: () => void, onBack?: () => v
         if (collide(stateRef.current.grid, stateRef.current.activePiece)) {
             stateRef.current.activePiece.pos.y--;
             merge(stateRef.current.grid, stateRef.current.activePiece);
+
+            // Add score for placing a piece
+            stateRef.current.score += 10;
+            setScore(stateRef.current.score);
+
             playerReset();
             arenaSweep();
         }
@@ -332,10 +339,24 @@ const TetrisGame = ({ onClose, onBack }: { onClose: () => void, onBack?: () => v
                 const bs = 30; // Dense / High Resolution
                 layoutRef.current.blockSize = bs;
 
-                const cols = Math.ceil(canvas.width / bs);
-                const rows = Math.ceil(canvas.height / bs);
+                // Use floor to ensure grid fits entirely within canvas
+                const cols = Math.floor(canvas.width / bs);
+                const rows = Math.floor(canvas.height / bs);
 
                 stateRef.current.grid = createMatrix(cols, rows);
+
+                // Reset State
+                stateRef.current.score = 0;
+                stateRef.current.lines = 0;
+                stateRef.current.level = 1;
+                stateRef.current.gameOver = false;
+                stateRef.current.dropInterval = 1000;
+
+                setScore(0);
+                setLines(0);
+                setLevel(1);
+                setGameOver(false);
+
                 playerReset();
             }
         };
@@ -396,6 +417,7 @@ const TetrisGame = ({ onClose, onBack }: { onClose: () => void, onBack?: () => v
                                 y + stateRef.current.activePiece.pos.y,
                                 value
                             );
+                            resetTrigger
                         }
                     });
                 });
@@ -420,24 +442,24 @@ const TetrisGame = ({ onClose, onBack }: { onClose: () => void, onBack?: () => v
                 {onBack && (
                     <button
                         onClick={onBack}
-                        className="text-green-500 hover:text-green-300 transition-colors bg-black/40 p-2 hover:bg-green-900/40 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)]"
+                        className="text-green-500 hover:text-green-300 transition-colors bg-black/40 p-2 h-fit hover:bg-green-900/40 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)]"
                         title="Back to Menu"
                     >
-                        <ChevronLeft size={32} />
+                        <ChevronLeft size={22} />
                     </button>
                 )}
                 <button
                     onClick={onClose}
-                    className="text-green-500 hover:text-green-300 transition-colors bg-black/40 p-2 hover:bg-green-900/40 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)]"
+                    className="text-green-500 hover:text-green-300 transition-colors bg-black/40 p-2 h-fit hover:bg-green-900/40 rounded-full shadow-[0_0_10px_rgba(34,197,94,0.3)]"
                     title="Close Game"
                 >
-                    <X size={32} />
+                    <X size={22} />
                 </button>
             </div>
 
             <section className="w-full max-w-7xl h-[85vh] p-4 flex flex-col lg:flex-row gap-4 relative z-10">
 
-                {/* 1. LEFT PANE - STATUS */}
+                {/* 1. LEFT PANE - STATUS - DESKTOP ONLY*/}
                 <div className={`w-full lg:w-[25%] hidden lg:flex flex-col gap-6 z-10 ${panelStyle}`}>
                     <div>
                         <div className="flex items-center gap-3 border-b border-green-500/20 pb-4 mb-4">
@@ -474,27 +496,69 @@ const TetrisGame = ({ onClose, onBack }: { onClose: () => void, onBack?: () => v
                     </div>
                 </div>
 
-                {/* 2. CENTER PANE - GAME */}
-                <div className="relative w-full lg:w-[50%] h-full z-10 flex items-center justify-center flex-1">
-                    <div ref={canvasContainerRef} className="relative w-full h-full rounded-2xl border-2 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.2)] overflow-hidden bg-black/90">
+                {/* 2. CENTER PANE - GAME - MOBILE AND DESKTOP*/}
+                <div className="relative w-full lg:w-[50%] h-full z-10 flex flex-col items-center justify-center flex-1">
+                    {/* Mobile Stats Header */}
+                    <div className="flex lg:hidden w-full justify-between items-center bg-black/50 p-2 rounded-t-xl border-x border-t border-green-500/30 text-green-400 font-mono text-xs mb-1">
+                        <div>SCORE: <span className="text-white">{score}</span></div>
+                        <div>LEVEL: <span className="text-white">{level}</span></div>
+                    </div>
+
+                    <div ref={canvasContainerRef} className="relative w-full h-full lg:h-full flex-1 rounded-2xl border-2 border-green-500/50 shadow-[0_0_30px_rgba(34,197,94,0.2)] overflow-hidden bg-black/90">
                         <canvas ref={canvasRef} className="block w-full h-full" />
 
                         {gameOver && (
-                            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm">
-                                <h2 className="text-4xl text-green-500 font-pixelify mb-4">GAME OVER</h2>
-                                <p className="text-gray-300 font-mono mb-8">FINAL SCORE: {score}</p>
-                                <button
-                                    onClick={onClose}
-                                    className="px-8 py-3 bg-green-600 text-white rounded font-bold hover:bg-green-500 transition-colors"
-                                >
-                                    CLOSE
-                                </button>
+                            <div className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-sm gap-12">
+                                <h2 className="text-5xl text-green-500 font-pixelify">GAME OVER</h2>
+                                <p className="text-gray-300 font-mono">FINAL SCORE: {score}</p>
+                                <div className="flex flex-col text-sm gap-4">
+                                    <button
+                                        onClick={() => setResetTrigger(prev => prev + 1)}
+                                        className="px-8 py-3 bg-green-600 text-white rounded font-bold hover:bg-green-500 transition-colors"
+                                    >
+                                        PLAY AGAIN
+                                    </button>
+                                    <button
+                                        onClick={onClose}
+                                        className="px-8 py-3 bg-green-800 text-white rounded font-bold hover:bg-green-700 transition-colors"
+                                    >
+                                        CLOSE
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>
+
+                    {/* Mobile Controls */}
+                    <div className="grid lg:hidden grid-cols-4 gap-2 w-full mt-4 h-20 shrink-0">
+                        <button
+                            className="bg-green-900/40 border border-green-500/50 rounded-xl flex items-center justify-center active:bg-green-500/40 transition-colors touch-manipulation"
+                            onClick={() => playerMove(-1)}
+                        >
+                            <ArrowLeft className="text-green-400 w-8 h-8" />
+                        </button>
+                        <button
+                            className="bg-green-900/40 border border-green-500/50 rounded-xl flex items-center justify-center active:bg-green-500/40 transition-colors touch-manipulation"
+                            onClick={() => playerDrop()}
+                        >
+                            <ArrowDown className="text-green-400 w-8 h-8" />
+                        </button>
+                        <button
+                            className="bg-green-900/40 border border-green-500/50 rounded-xl flex items-center justify-center active:bg-green-500/40 transition-colors touch-manipulation"
+                            onClick={() => playerMove(1)}
+                        >
+                            <ArrowRight className="text-green-400 w-8 h-8" />
+                        </button>
+                        <button
+                            className="bg-green-900/40 border border-green-500/50 rounded-xl flex items-center justify-center active:bg-green-500/40 transition-colors touch-manipulation"
+                            onClick={() => playerRotate(1)}
+                        >
+                            <RotateCw className="text-green-400 w-8 h-8" />
+                        </button>
+                    </div>
                 </div>
 
-                {/* 3. RIGHT PANE - Dummy/Decor or High Scores in future */}
+                {/* 3. RIGHT PANE - - DESKTOP ONLY - Dummy/Decor or High Scores in future */}
                 <div className={`w-full lg:w-[25%] hidden lg:flex flex-col justify-start gap-4 z-10 ${panelStyle}`}>
                     <div className="flex items-center gap-3 border-b border-green-500/20 pb-4 mb-2">
                         <div className="w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_8px_#10b981]"></div>
